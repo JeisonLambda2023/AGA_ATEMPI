@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@import url('https://fonts.cdnfonts.com/css/noir');
+
 *{
     font-family: 'Poppins', sans-serif;
 }
@@ -8,14 +10,14 @@
     width: 250px;
     height: 100%;
     color: white;
-    background-color: #11101d;
+    background-color: #023d83;
     padding: 5px;
     z-index: 99;
     transition: all 0.5s ease;
 }
 
 .sidebar .header{
-    background-color: rgba(0,0,0,0.1);
+    /* background-color: rgba(0,0,0,0.1); */
     margin-left: 10px;
     margin-top: 10px;
     display: flex;
@@ -24,15 +26,16 @@
 
 .sidebar .header .cont_logo{
     /* background-color: #191733; */
-    width: 40px;
-    height: 40px;
+    width: 200px;
+    height: 80px;
     border-radius: 10px;
-    margin-right: 10px;
+    margin-right: 0px;
+    margin-left: 10px;
 }
 
 .sidebar .header .cont_logo img{
     width: 100%;
-    height: 102%;
+    height: 100%;
 }
 
 .sidebar .header .titulo_app{
@@ -48,12 +51,12 @@
 .sidebar .menu li{
     padding: 15px;
     margin-left: -20px;
+    display: flex;
+    align-items: center !important;
 }
 .sidebar .menu li .icono{
-    font-weight: bold;
-    padding-right: 10px;
-    color: #b1bc20;
-    font-size: 18px;
+    width: 20px;
+    margin-right: 5px;
 }
 .sidebar .menu a{
     text-decoration: none;
@@ -73,6 +76,11 @@
     cursor: pointer;
 }
 
+
+.sidebar .header .contM{
+    display: none;
+}
+
 .sidebar.cerrado{
     width: 80px;
     transition: all 0.5s ease;
@@ -80,6 +88,24 @@
 
 .sidebar.cerrado .header{
     margin-left: 15px;
+}
+
+.sidebar.cerrado .header .cont_logo{
+    width: 80px;
+    margin-left: 0px;
+}
+.sidebar.cerrado .header .cont_logo img{
+    display: none;
+}
+
+.sidebar.cerrado .header .contM{
+    display: flex;
+    margin-left: -81px;
+    margin-top: 0px;
+}
+.sidebar.cerrado .header .contM img{
+    width: 40px;
+    margin-top: 5px;
 }
 
 .sidebar.cerrado .menu li:hover{
@@ -98,7 +124,7 @@
     display: none;
 }
 
-.sidebar.cerrado .titulo_app{
+.sidebar.cerrado .contM{
     display: none;
 }
 
@@ -217,6 +243,21 @@
     /* float: right */
 }
 
+.cont_list{
+    /* position: absolute; */
+    background-color: white;
+    border-radius: 10px;
+    transition: all 0.5s ease;
+    /* width: 100% !important; */
+    margin: 0px !important;
+    margin-left: 18px !important;
+    margin-right: 18px !important;
+    padding: 10px;
+    margin-top: 50px !important;
+    /* width: 1180px !important;
+    margin-left: 50px !important; */
+}
+
 @media(max-width: 1000px){
     .sidebar{
         width: 100%;
@@ -227,7 +268,7 @@
 
     .sidebar .ico_cerrar{
         display: block;
-        margin-left: 145px;
+        margin-left: 110px;
         margin-top: -25px;
         font-size: 20px;
     }
@@ -251,6 +292,14 @@
     .sidebar.cerrado .menu{
         margin-left: -45px;
     }
+    .sidebar.cerrado .header .cont_logo{
+        display: none;
+    }
+    .sidebar.cerrado .header .contM{
+        display: none;
+       
+    }
+
     .navbar{
         width: 0px;
     }
