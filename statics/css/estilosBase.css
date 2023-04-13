@@ -1,0 +1,39 @@
+.encabezado{
+    display: flex;
+    justify-content: space-between;
+}
+body{
+    background-color: #E4E9F7;
+}
+.cont_list{
+    /* position: absolute; */
+    background-color: white;
+    border-radius: 10px;
+    transition: all 0.5s ease;
+    padding: 15px;
+    height: 100%;
+    /* width: 1180px !important;
+    margin-left: 50px !important; */
+}
+
+.titulo_seccion{
+    font-size: 25px;
+    font-weight: 700;
+}
+
+.btnAdd{
+    background-color: #14284b;
+    color: white;
+    font-weight: 500;
+}
+
+.btn.Hor{
+    background-color: #ffe373;
+    color: white;
+}
+#UsuariosTable_filter input{
+    border-radius: 10px;
+    margin-left: 5px;
+}
+
+/* b1bc20 */

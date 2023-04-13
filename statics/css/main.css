@@ -1,0 +1,306 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500&display=swap');
+
+body{
+    background-color: #e4e9f7 !important;
+}
+
+body::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+body::-webkit-scrollbar:vertical {
+    width:10px;
+}
+
+body::-webkit-scrollbar-button:increment,.contenedor::-webkit-scrollbar-button {
+    display: none;
+} 
+
+body::-webkit-scrollbar:horizontal {
+    height: 10px;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #797979;
+    border-radius: 20px;
+    border: 2px solid #f1f2f3;
+}
+
+body::-webkit-scrollbar-track {
+    border-radius: 10px;  
+}
+
+.CanvasMenu{
+    position: relative;
+}
+
+.btn-close-session{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+    margin-bottom: 10px !important;
+}
+.homecenter{
+    position: relative;
+    margin-top: 30vh;
+}
+.requerido{
+    font-size: 15px !important;
+    font-weight:500 !important;
+    color: red !important;
+    top: 0px !important;
+}
+
+.buttonSweetalert{
+    margin-left: 20px !important;
+}
+.filtroTipoUsuario{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.error_text{
+    font-weight:500;
+    color: rgb(220, 53, 69);
+    margin-left: 10px;
+}
+#icon_danger_ESTUDIANTE, #icon_danger_ACUDIENTE, #icon_danger_EMERGENCIA, #icon_danger_FACTURACION, #icon_danger_REGISTRO, #icon_danger_DOCUMENTOS{
+    font-weight:600;
+    color: red !important;
+    display: none;
+}
+.containerPrincipal{
+    height: 80px;
+}
+.nivelStyle{
+    width: 100%;
+    height: 100%;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin-bottom: 10px;
+}
+
+.NivelText{
+    width: 100%;
+    height: auto;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.NivelText p{
+    position: relative;
+    top: 5%;
+    left: 20%;
+    right: 10%;
+    display: inline-block;
+    vertical-align: middle;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: medium;
+    word-break: break-all;
+}
+@media(max-width:1000px) {
+    .NivelText p{
+        font-size: small;
+    }
+}
+@media(max-width:760px) {
+    .NivelText p{
+        font-size: medium;
+    }
+}
+
+.required{
+    font-size: 15px !important;
+    font-weight:500 !important;
+    color: red !important;
+    top: 0px !important;
+}
+
+
+/* estilos de drag and drop  */
+
+.drag-area{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', 'sans-serif';
+}
+.drag-areaDocumento{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', 'sans-serif';
+}
+
+.bodyFile{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background: #e0eafc;
+    background: -webkit-linear-gradient(to right, #cfdef3, #e0eafc);
+    background: linear-gradient(to right, #cfdef3, #e0eafc);
+    height: 300px;
+}
+.containerFile{
+    max-width: 80%;
+    width: 100%;
+    padding:30px;
+    background:  #fff;
+    border-radius: 20px;
+    box-shadow: rgba(149, 157, 165, 0.2), 0px, 8px, 24px;
+}
+
+.drag-area{
+    height: 150px;
+    border:  3px dashed #e0eafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 10px, auto;
+}
+.drag-areaDocumento{
+    height: 150px;
+    border:  3px dashed #e0eafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 10px, auto;
+}
+
+.containerFile h3{
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.drag-area .icon{
+    font-size: 20px;
+    color: #1683ff;
+}
+.drag-areaDocumento .icon{
+    font-size: 20px;
+    color: #1683ff;
+}
+
+.drag-area .header{
+    font-size: 20px;
+    font-weight: 500;
+    color: #34495e;
+}
+
+.drag-areaDocumento .headerDocumento{
+    font-size: 20px;
+    font-weight: 500;
+    color: #34495e;
+}
+
+.drag-area .support{
+    font-size: 12px;
+    color: gray;
+    margin: 10px 0 15px 0;
+}
+.drag-areaDocumento .support{
+    font-size: 12px;
+    color: gray;
+    margin: 10px 0 15px 0;
+}
+
+
+.drag-area .buttonDrag, .buttonDragDocumento{
+    font-size: 20px;
+    font-weight: 500;
+    color:#1683ff;
+    cursor: pointer;
+}
+
+
+.drag-area.active{
+    border:  2px solid #1683ff;
+}
+.drag-areaDocumento.active{
+    border:  2px solid #1683ff;
+}
+
+
+
+.drag-area img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.drag-areaDocumento img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* tooltip estilos propios */
+
+/* Tooltip container */
+.tooltipE {
+    position: relative;
+    display: inline-block;
+
+  }
+  
+  /* Tooltip text */
+  .tooltipE .tooltiptextE {
+    visibility: hidden;
+    width: 120px;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+   
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+  }
+  
+  /* Show the tooltip text when you mouse over the tooltip container */
+  .tooltipE:hover .tooltiptextE {
+    visibility: visible;
+  }
+/* Style button sup in edit mr in picadero's list */
+.supEditMr{
+    cursor:pointer;
+    float:right;
+    margin-right:-10px; 
+    margin-top:2px;
+    font-size:13px;
+    padding:2.5px 5px;
+    color:#ffc107!important;
+}
+.supEditMr:hover{
+    margin-right:-10px; 
+    margin-top:4px;
+    font-size:15px;
+}
+
+.Nosepuedemodificar{
+    background-color: red !important;
+    border-color:red !important;
+}
+.PrecaucionTodavidsepuedemodificar{
+    background-color: rgb(184, 184, 184) !important;
+    border-color:rgb(168, 168, 168) !important;
+    color: #000!important;
+}
+
+/* SPINNER */
+#spinnerLoad{
+    margin-top: 20vh;
+}
+.ocultar{
+    display: none;
+}
+
+.mostrar{
+    display: block;
+}

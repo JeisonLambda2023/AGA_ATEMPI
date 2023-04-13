@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+  <link rel="stylesheet" href="{% static 'libs/bootstrap/css/bootstrap.css' %}">
+  <link rel="stylesheet" href="{% static 'libs/fontawesome/css/all.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="{% static 'libs/bootstrap/css/bootstrap.css' %}">
+  <link rel="icon" href="{% static 'img/Logo2.png' %}">
+  <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+  <title>AGA - LOGIN</title>
+</head>
+<body>
+  <div class="row" id="contenedor_principal">
+    {% if messages %}
+    {% for message in messages %}
+        {% if message.tags == "info" %}
+            <script>
+              Swal.fire(
+                'Sesión expirada',
+                '{{message}}',
+                'info'
+              )
+            </script>
+        {%endif%}
+    {% endfor %}
+        
+{% endif %}
+<div class="col-md-3"></div>
+    <div class="col-md-6" id="Col_log">
+        <P style="font-size: 30px;font-weight: bold;text-align: center;color: white;margin-top: 120px;">Security Access<br><img style="width: 260px; height: 140px;" src="{% static 'img/Logo3.png' %}"></P>
+          {%if error%}
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
+  
+              <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+  
+            </svg>
+            <strong>Error</strong> {{error}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          {%endif%}
+            
+          <form action="" method="post">
+              {% csrf_token %}
+                <div class="row" id="row_form">
+                    <div class="col-12 mb-2">
+                        <div class="form-input">
+                            <span class="icon"><i class="fa-solid fa-user"></i></span>
+                           {{form.username}}
+                        </div>
+                    </div>
+                    <div class="col-12 mb-1">
+                        <div class="form-input">
+                            <span class="icon"><i class="fa-solid fa-lock"></i></span>
+                            {{form.password}}
+                            <span class="showPassIcon" id="show" onclick="show()"><i class="fa fa-eye-slash"></i></span>
+                            <span class="hidePassIcon" id="hide" onclick="hide()"><i class="fa fa-eye"></i></span>
+                        </div>
+                    </div>
+                    <div class="col-12 mb-1">
+                        <div class="form-input">
+                            <select class="form-select" required type="text" name="access">
+                              <option value="None">-- Punto de acceso donde se encuentra --</option>
+                              {% for PA in puntosAcceso %}
+                              <option value={{ PA.id }}>{{ PA.nombre }}</option>
+                              {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-12 text-center mb-3 mt-2">
+                        <button type="submit" class="btn btn_ingresar">Ingresar &nbsp; <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                    <br><br>
+                  <br><br>
+                </div>
+          </form>
+    </div>
+    <div class="col-md-3"></div>
+  </div>
+</body>
+<script src="{% static 'libs/sweetalert/sweetalert.js' %}"></script>
+<script>
+  function show(){
+    let show = document.getElementById('show')
+    let hide = document.getElementById('hide')
+    show.style.display = 'none'
+    hide.style.display = 'flex'
+    document.getElementsByName('password')[0].type = 'text'
+  }
+  function hide(){
+    let show = document.getElementById('show')
+    let hide = document.getElementById('hide')
+    show.style.display = 'flex'
+    hide.style.display = 'none'
+    document.getElementsByName('password')[0].type = 'password'
+  }
+</script>
+</html>
+
+
+{% comment %}
+{%if error%}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
+
+    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+
+  </svg>
+  <strong>Error</strong> {{error}}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{%endif%}
+{% endcomment %}
+    

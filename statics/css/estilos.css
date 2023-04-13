@@ -1,0 +1,222 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+
+body{
+    font-family: 'Poppins', sans-serif !important;
+}
+body::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+body::-webkit-scrollbar:vertical {
+    width:10px;
+}
+
+body::-webkit-scrollbar-button:increment,.contenedor::-webkit-scrollbar-button {
+    display: none;
+} 
+
+body::-webkit-scrollbar:horizontal {
+    height: 10px;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    border-radius: 20px;
+    border: 2px solid transparent;
+}
+
+body::-webkit-scrollbar-track {
+    border-radius: 10px;  
+}
+
+.co_prin{
+    height: 100vh;
+    display: flex;
+}
+
+#colun{
+    background: -webkit-linear-gradient(#203864, #203864, #203864);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(#203864, #203864, #203864); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#colun img{
+    width: 220px;
+    height: 220px;
+}
+
+#colun p{
+    font-size: 25px;
+    font-weight: bold;
+    color: white;
+    margin-top: 10px;
+}
+
+.show_error{
+    background-color: #ff64647a;
+    color: rgb(255, 255, 255);
+    height: 40px;
+    border-radius: 5px;
+    width: 100%;
+    text-align: center;
+    padding-top: 8px;
+}
+.show_info{
+    background-color: #41f856c4;
+    color: rgb(255, 255, 255);
+    height: 40px;
+    border-radius: 5px;
+    width: 100%;
+    text-align: center;
+    padding-top: 8px;
+}
+.texto-seccion{
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+    color: #24243e;
+    margin-top: 150px;
+}
+
+a{
+    color: #203864 !important;
+    text-decoration: none !important;
+}
+a:hover{
+    color: #203864 !important;
+}
+
+
+.form-input {
+    margin: 10px auto;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+}
+
+.icon {
+    position: absolute;
+    left: 15px;
+    top: 0;
+    font-size: 20px;
+    color: #203864;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.showPassIcon {
+    position: absolute;
+    right: 15px;
+    top: 0;
+    font-size: 20px;
+    color: #203864;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.hidePassIcon {
+    position: absolute;
+    right: 15px;
+    top: 0;
+    font-size: 20px;
+    color: #203864;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    display: none;
+    cursor: pointer;
+}
+
+
+#row_form input{
+    border: 2px solid #eee;
+    padding: 5px 10px 5px 50px;
+    font-size: 18px;
+    line-height: 35px;
+    outline: 0;
+    display: block;
+    width: 100%;
+    border-radius: 20px;
+    background-color: #efefef;
+}
+
+.btn_ingresar{
+    background-color: #203864 !important;
+    width: 70% !important;
+    font-weight: bold !important;
+    border-radius: 20px !important;
+    color: white !important;
+    height: 40px !important;
+    transition: all 0.5s ease !important;
+}
+
+.btn_ingresar:hover{
+    background-color: #203864 !important;
+    color: white;
+    height: 40px;
+    transition: all 0.5s ease;
+}   
+.mas{
+    font-size: 15px;
+    padding-left: 20px;
+}
+
+#contenedor_principal{
+    height: 100vh;
+    background-color: #203864 !important;
+}
+
+.cont_desc{
+    /* background-color: red; */
+    width: 60%;
+    text-align: center;
+}
+
+.cont_desc small{
+    color: white;
+    font-size: 16px;
+    display: flex;
+}
+
+@media (max-width: 900px){
+    #contenedor_principal{
+        display: flex;
+        /* flex-direction: column-reverse; */
+    }
+
+    #Columna1{
+        background-color: red;
+    }
+    #contForm{
+        margin-left: 0px;
+        margin-top: 0px;
+        padding: 0px;
+        padding-left: 0px;
+        padding-right: 0px;
+        /* width: 100%; */
+    }
+    .texto-seccion{
+        margin-top: 45px;
+    }
+
+
+    #Col_log{
+        background-color: #203864;
+    }
+
+    .cont_desc small{
+        color: white;
+        font-size: 16px;
+        display: none;
+    }
+
+}

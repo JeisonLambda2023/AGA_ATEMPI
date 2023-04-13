@@ -1,0 +1,70 @@
+input{
+    border: 1px solid #dadce0;
+    border-radius: 4px;
+    box-shadow: 0 0 0 transparent;
+    font-size: 16px;
+    line-height: 17px;
+    outline: transparent;
+    padding: 11px 16px;
+    transition: border .3s box-shadow .3s;
+    width: 100%;
+}
+
+select{
+    border: 1px solid #dadce0;
+    border-radius: 4px;
+    box-shadow: 0 0 0 transparent;
+    font-size: 17px;
+    line-height: 24px;
+    outline: transparent;
+    padding: 11px 16px;
+    transition: border .3s, box-shadow .3s;
+    width: 100%;
+}
+
+.formulario{
+    display: grid;
+    grid-template-columns:repeat(2, 1fr);
+    grid-gap:30px;
+}
+.checkbox{
+    display: grid;
+    grid-template-columns: 80% 20%;
+}
+
+@media (max-width: 700px) {
+    .formulario{display: grid;grid-template-columns:repeat(1, 1fr);grid-gap:30px;}
+    canvas{
+        width: 100%!important;
+    }
+    #fondoConsentimiento{
+        width: 105%!important;
+    }
+    #fondoContrato{
+        width: 105%!important;
+    }
+}
+
+#DivContrato::-webkit-scrollbar {
+    width: 8px;     /* Tamaño del scroll en vertical */
+    height: 8px;    /* Tamaño del scroll en horizontal */
+    border-radius: 5px;
+    background-color: #ccc;
+}
+#DivContrato::-webkit-scrollbar-thumb {
+    background: #0dcaf0;
+    border-radius: 4px;
+}
+div#DivConsentimiento {
+    margin-left: 10px;
+    width: 94% !important;
+}
+@media(max-width: 900px){
+    div#DivConsentimiento {
+        margin-left: 10px;
+    }
+
+    #titleConsentimiento{
+        font-size: 16px !important;
+    }
+}

@@ -1,0 +1,318 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+*{
+    font-family: 'Poppins', sans-serif;
+}
+
+.sidebar{
+    position: fixed;
+    width: 250px;
+    height: 100%;
+    color: white;
+    background-color: #11101d;
+    padding: 5px;
+    z-index: 99;
+    transition: all 0.5s ease;
+}
+
+.sidebar .header{
+    background-color: rgba(0,0,0,0.1);
+    margin-left: 10px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar .header .cont_logo{
+    /* background-color: #191733; */
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    margin-right: 10px;
+}
+
+.sidebar .header .cont_logo img{
+    width: 100%;
+    height: 102%;
+}
+
+.sidebar .header .titulo_app{
+    font-size: 22px;
+    font-weight: 700;
+    display: flex;
+}
+
+.sidebar .menu{
+    list-style: none;
+    padding-top: 20px;
+}
+.sidebar .menu li{
+    padding: 15px;
+    margin-left: -20px;
+}
+.sidebar .menu li .icono{
+    font-weight: bold;
+    padding-right: 10px;
+    color: #b1bc20;
+    font-size: 18px;
+}
+.sidebar .menu a{
+    text-decoration: none;
+    color: white;
+}
+
+.sidebar li.active{
+    background-color: #191733;
+    border-radius: 10px;
+    margin-right: 15px;
+}
+
+.sidebar .menu li:hover{
+    background-color: #191733;
+    border-radius: 10px;
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+.sidebar.cerrado{
+    width: 80px;
+    transition: all 0.5s ease;
+}
+
+.sidebar.cerrado .header{
+    margin-left: 15px;
+}
+
+.sidebar.cerrado .menu li:hover{
+    background-color: #191733;
+    border-radius: 10px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.sidebar.cerrado li.active{
+    background-color: #191733;
+    border-radius: 10px;
+    margin-right: 10px;
+}
+.sidebar.cerrado .item{
+    display: none;
+}
+
+.sidebar.cerrado .titulo_app{
+    display: none;
+}
+
+.navbar{
+    float: right;
+    background-color: white;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    width: calc(100% - 250px);
+    /* width: 100%; */
+    height: 60px;
+    display: flex;
+    align-items: center;
+    transition: all 0.5s ease;
+    z-index: 2;
+}
+
+.navbar .icono_menu{
+    padding-left: 20px;
+    font-size: 20px;
+}
+
+.navbar .perfil{
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  margin-right: 20px;
+  margin-top: -2px;
+}
+
+.navbar .perfil img{
+  border-radius: 50%;
+}
+
+.navbar .dropd{
+  position: absolute;
+  margin: 0px;
+  right: 20px;
+  background-color: white;
+  width: 150px;
+  transition: all 0.5s ease;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+.navbar .dropd ul{
+  list-style: none;
+  text-align: left;
+  margin-left: -20px;
+  padding-top: 10px;
+}
+
+.navbar .dropd ul li{
+  padding-top: 5px;
+}
+.navbar .dropd ul li a{
+  text-decoration: none;
+  color: #11101d;
+}
+
+.navbar.abierto{
+    /* background-color: red; */
+    width: calc(100% - 80px);
+}
+
+.home-section{
+    position: relative;
+    background: #E4E9F7;
+    min-height: 100vh;
+    top: 0;
+    left: 250px;
+    width: calc(100% - 250px);
+    transition: all 0.5s ease;
+    z-index: 1;
+    padding-top: 20px;
+}
+
+.sidebar.cerrado ~ .home-section{
+    left: 80px;
+    width: calc(100% - 80px);
+}
+
+.sidebar ~ .home-section{
+    left: 80px;
+    width: calc(100% - 80px);
+}
+
+.home-section .text{
+    display: inline-block;
+    color: #11101d;
+    font-size: 25px;
+    font-weight: 500;
+    margin: 18px
+}
+
+
+
+.sidebar .ico_cerrar{
+    display: none;
+}
+
+.dropd{
+  display: block;
+}
+
+.dropd.close{
+  display: none;
+}
+
+.derechos{
+    position: absolute;
+    color: #9b9b9b;
+    bottom: 0;
+    /* top: 5px; */
+    right: 0;
+    padding-right: 10px;
+    /* float: right */
+}
+
+@media(max-width: 1000px){
+    .sidebar{
+        width: 100%;
+        height: 118%;
+        margin: 0px;
+        transition: all 0.5s ease;
+    }
+
+    .sidebar .ico_cerrar{
+        display: block;
+        margin-left: 145px;
+        margin-top: -25px;
+        font-size: 20px;
+    }
+
+    .sidebar.cerrado .ico_cerrar{
+        display: none;
+        
+    }
+
+    .sidebar.cerrado{
+        width: 0px;
+        margin-left: -15px;
+        transition: all 0.5s ease;
+    }
+
+    .sidebar.cerrado li.active{
+        /* background-color: #191733; */
+        display: none;
+        
+    }
+    .sidebar.cerrado .menu{
+        margin-left: -45px;
+    }
+    .navbar{
+        width: 0px;
+    }
+
+    .navbar.abierto{
+        position: absolute;
+        width: 100%;
+        margin: 0;
+        transition: all 0.5s ease;
+    }
+
+    .navbar .perfil{
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+        border-radius: 10px;
+        width: 40px;
+        height: 40px;
+        margin-right: 20px;
+        margin-top: -2px;
+    }
+
+    .home-section{
+        position: relative;
+        background: #E4E9F7;
+        min-height: 100vh;
+        top: 0;
+        left: 250px;
+        width: calc(100% - 250px);
+        transition: all 0.5s ease;
+        z-index: 1;
+        padding-top: 20px;
+    }
+    
+    .sidebar.cerrado ~ .home-section{
+        left: 0;
+        width: 100%
+    }
+    
+    .sidebar ~ .home-section{
+        left: 80px;
+        width: calc(100% - 80px);
+    }
+    
+    .home-section .text{
+        display: inline-block;
+        color: #11101d;
+        font-size: 25px;
+        font-weight: 500;
+        margin: 18px
+    }
+
+    .cont_list{
+        /* position: absolute; */
+        background-color: white;
+        border-radius: 10px;
+        transition: all 0.5s ease;
+        width: 100% !important;
+        margin: 0px !important;
+        margin-left: 5px !important;
+        margin-right: 18px !important;
+        padding: 10px;
+        margin-top: 50px !important;
+        /* width: 1180px !important;
+        margin-left: 50px !important; */
+    }
+}

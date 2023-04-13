@@ -1,0 +1,62 @@
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modificarEmpresaModal">{{object}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'modificarEmpresas' object.pk %}" method="post" id="modificarEmpresasForm">
+            {% csrf_token %}
+            <Label style="font-size: 15px;"><strong>Nit: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
+                {{form.nit}}
+                <p id="nit" class="bg-light error_text" style="color: #dc3545;"></p>
+                <Label style="font-size: 15px;"><strong>Razón social: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
+                {{form.razon_social}}
+                <p id="razon_social" class="bg-light error_text" style="color: #dc3545;"></p>
+                <Label style="font-size: 15px;"><strong>Área de servicios: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
+                {{form.area_servicio}}
+                <p id="area_servicio" class="bg-light error_text" style="color: #dc3545;"></p>
+                <Label style="font-size: 15px;"><strong>Fecha inicio de actividades: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
+                {{form.fecha_inicio_actividad}}
+                <p id="fecha_inicio_actividad" class="bg-light error_text" style="color: #dc3545;"></p>
+                <Label style="font-size: 15px;"><strong>Fecha fin de actividades: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
+                {{form.fecha_fin_actividad}}
+                <p id="fecha_fin_actividad" class="bg-light error_text" style="color: #dc3545;"></p>
+            <Label style="font-size: 15px;"><strong>Estado <sup class="required"  style="color: #dc3545;">*</sup></strong></Label>
+            {{form.estado}}
+            <p id="estado" class="bg-light error_text" style="color: #dc3545;"></p>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" onclick="ModificarEmpresa()">Guardar cambios</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function ModificarEmpresa(){
+        form = $("#modificarEmpresasForm")
+        $.ajax({
+            url:form.attr("action"),
+            type:form.attr("method"),
+            data: form.serialize(),
+            success: function(data){
+                location.reload()
+            },
+            error: function(errores){
+                console.log(errores.responseJSON["errores"]);
+                form.find('.error_text').text('');
+                form.find('.is-invalid').removeClass('is-invalid');
+                errores = errores.responseJSON["errores"]
+
+                for (let i in errores){
+                    let x=form.find('input[name='+i+']')
+                    let y=form.find('select[name='+i+']')
+                    x.addClass("is-invalid")
+                    y.addClass("is-invalid")
+                    $("#"+i).text(errores[i])
+            }
+            }
+        })
+    }
+  </script>

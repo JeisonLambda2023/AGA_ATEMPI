@@ -1,0 +1,59 @@
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{object}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'modificarUsuarios' object.pk %}" method="post" id="modificarUsuarioForm">
+            {% csrf_token %}
+            <Label style="font-size: 15px;"><strong>Documento: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
+            {{form.documento}}
+            <p id="nombre" class="bg-light error_text" style="color: #dc3545;"></p>
+            <Label style="font-size: 15px;"><strong>Nombre de usuario: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
+            {{form.nombre}}
+            <p id="latitud" class="bg-light error_text" style="color: #dc3545;"></p>
+            <Label style="font-size: 15px;"><strong>Rol: <sup class="required"  style="color: #dc3545;">*</sup></strong></Label>
+            {{form.rol}}
+            <p id="longitud" class="bg-light error_text" style="color: #dc3545;"></p>
+            <Label style="font-size: 15px;"><strong>Contraseña: <sup class="required"  style="color: #dc3545;">*</sup></strong></Label>
+            {{form.password}}
+            <p id="password" class="bg-light error_text" style="color: #dc3545;"></p>
+            <Label style="font-size: 15px;"><strong>Estado <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
+            {{form.estado}}
+            <p id="estado" class="bg-light error_text" style="color: #dc3545;"></p>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" onclick="ModificarUsuario()">Guardar cambios</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function ModificarUsuario(){
+        form = $("#modificarUsuarioForm")
+        $.ajax({
+            url:form.attr("action"),
+            type:form.attr("method"),
+            data: form.serialize(),
+            success: function(data){
+                location.reload()
+            },
+            error: function(errores){
+                console.log(errores.responseJSON["errores"]);
+                form.find('.error_text').text('');
+                form.find('.is-invalid').removeClass('is-invalid');
+                errores = errores.responseJSON["errores"]
+
+                for (let i in errores){
+                    let x=form.find('input[name='+i+']')
+                    let y=form.find('select[name='+i+']')
+                    x.addClass("is-invalid")
+                    y.addClass("is-invalid")
+                    $("#"+i).text(errores[i])
+            }
+            }
+        })
+    }
+  </script>
