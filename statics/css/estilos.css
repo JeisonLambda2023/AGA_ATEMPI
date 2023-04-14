@@ -36,8 +36,8 @@ body::-webkit-scrollbar-track {
 }
 
 #colun{
-    background: -webkit-linear-gradient(#203864, #203864, #203864);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(#203864, #203864, #203864); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: -webkit-linear-gradient(#023d83, #023d83, #023d83);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(#023d83, #023d83, #023d83); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -82,11 +82,11 @@ body::-webkit-scrollbar-track {
 }
 
 a{
-    color: #203864 !important;
+    color: #023d83 !important;
     text-decoration: none !important;
 }
 a:hover{
-    color: #203864 !important;
+    color: #023d83 !important;
 }
 
 
@@ -104,7 +104,7 @@ a:hover{
     left: 15px;
     top: 0;
     font-size: 20px;
-    color: #203864;
+    color: #023d83;
     height: 100%;
     display: flex;
     align-items: center;
@@ -115,7 +115,7 @@ a:hover{
     right: 15px;
     top: 0;
     font-size: 20px;
-    color: #203864;
+    color: #023d83;
     height: 100%;
     display: flex;
     align-items: center;
@@ -127,7 +127,7 @@ a:hover{
     right: 15px;
     top: 0;
     font-size: 20px;
-    color: #203864;
+    color: #023d83;
     height: 100%;
     display: flex;
     align-items: center;
@@ -150,7 +150,7 @@ a:hover{
 }
 
 .btn_ingresar{
-    background-color: #203864 !important;
+    background-color: #023d83 !important;
     width: 70% !important;
     font-weight: bold !important;
     border-radius: 20px !important;
@@ -160,7 +160,7 @@ a:hover{
 }
 
 .btn_ingresar:hover{
-    background-color: #203864 !important;
+    background-color: #023d83 !important;
     color: white;
     height: 40px;
     transition: all 0.5s ease;
@@ -172,7 +172,7 @@ a:hover{
 
 #contenedor_principal{
     height: 100vh;
-    background-color: #203864 !important;
+    background-color: #023d83 !important;
 }
 
 .cont_desc{
@@ -210,7 +210,7 @@ a:hover{
 
 
     #Col_log{
-        background-color: #203864;
+        background-color: #023d83;
     }
 
     .cont_desc small{

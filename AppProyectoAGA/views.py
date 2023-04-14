@@ -1,12 +1,11 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from AppProyectoAGA.models import PuntoAcceso, Usuario, Empresa
+from AppProyectoAGA.models import PuntoAcceso, Usuario, Empresa, Personal
 from django.contrib.auth.views import LoginView
-from .forms import  LoginForm, PuntoAccesoForm, EmpresaForm, UsuarioForm
+from .forms import  LoginForm, PuntoAccesoForm, EmpresaForm, UsuarioForm, PersonalForm
 from django.shortcuts import  redirect
 from django.contrib.auth import authenticate, login
 from datetime import datetime
-
 from django.views.generic import View, ListView, CreateView, UpdateView
 from django.urls import reverse_lazy
 
@@ -109,8 +108,62 @@ class eliminarUsuario(View):
         except Exception as e:
             return JsonResponse({"estado":True, "error":str(e)}, status=400)
 
-def personal(request):
-    return render(request, "AppProyectoAGA/Personal.html")
+
+class personal(View):
+    def get(self, request, *args, **kwargs):
+        personal = Personal.objects.filter(borrado=False)
+        empresas = Empresa.objects.filter(borrado=False, estado="1")
+        portales = PuntoAcceso.objects.filter(borrado=False, estado="1")
+        contexto={'personal': personal, "form":PersonalForm(),'empresas': empresas,'portales': portales}
+        return render(request, "AppProyectoAGA/Personal.html", contexto)
+    
+
+class crearPersonal(CreateView):
+    model = Personal
+    form_class = PersonalForm
+    template_name = "AppProyectoAGA/Personal.html"
+    success_url = reverse_lazy("Personal")
+    
+    def form_valid(self, form):
+        form.save()
+        return JsonResponse({"status":"OK"}, status=200)
+    
+    def form_invalid(self, form):
+        print(form.errors)
+        return JsonResponse({"status":"ERROR", "errores":form.errors}, status=400)
+    
+    def post(self, request, *args, **kwargs):
+        print(request.FILES)
+        return super().post(request, *args, **kwargs)
+
+class modificarPersonal(UpdateView):
+    model = Personal
+    form_class = PersonalForm
+    template_name = "AppProyectoAGA/Personal/modificar.html"
+    success_url = reverse_lazy("Personal")
+    
+    def post(self, request, *args, **kwargs):
+        print(request.FILES)
+        return super().post(request, *args, **kwargs)
+    
+    
+    def form_invalid(self, form):
+        print(form.errors)
+        return JsonResponse({"status":"ERROR", "errores":form.errors}, status=400)
+    
+class eliminarPersonal(View):
+    model = Personal
+    
+    def post(self, request, *args, **kwargs):
+        try:
+            personal = self.model.objects.get(pk=kwargs["pk"])
+            personal.borrado = True
+            personal.save()
+            return JsonResponse({"estado":True}, status=200)
+        except Exception as e:
+            return JsonResponse({"estado":True, "error":str(e)}, status=400)
+
+
 
 
 class portales(View):

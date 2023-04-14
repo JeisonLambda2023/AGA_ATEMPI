@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import AuthenticationForm, UsernameField
 from django import forms
-from .models import Usuario, PuntoAcceso, Empresa
+from .models import Usuario, PuntoAcceso, Empresa, Personal
 
 class LoginForm(AuthenticationForm):
     username = UsernameField(
@@ -51,5 +51,23 @@ class UsuarioForm(forms.ModelForm):
             "nombre": forms.TextInput(attrs={"class":"form-control", "autocomplete":"off",}), 
             "rol": forms.Select(attrs={"class":"form-select", "autocomplete":"off",}), 
             'password': forms.PasswordInput(attrs={'class': 'form-control', "autocomplete": "off",'id':"password",'requerid':'requerid','name':'password'}),
+            "estado": forms.Select(attrs={"class":"form-select", "autocomplete":"off",})
+        }
+        
+        
+class PersonalForm(forms.ModelForm):
+    class Meta:
+        model = Personal
+        fields = ["documento", "nombre_completo", "empresa", "portal_autorizado", "observaciones", "foto", "tipo_persona", "fecha_inicio_actividad", "fecha_fin_actividad", "estado"]
+        
+        widgets = {
+            "documento": forms.TextInput(attrs={"class":"form-control", "autocomplete":"off",}), 
+            "nombre_completo": forms.TextInput(attrs={"class":"form-control", "autocomplete":"off",}), 
+            "empresa": forms.Select(attrs={"class":"form-select"}),
+            "portal_autorizado": forms.Select(attrs={"class":"form-select"}),
+            "observaciones": forms.TextInput(attrs={"class":"form-control", "autocomplete":"off",}), 
+            "tipo_persona": forms.Select(attrs={"class":"form-select"}),
+            "fecha_inicio_actividad": forms.DateInput(attrs={"type":"date","class":"form-control", "autocomplete":"off",},format=('%Y-%m-%d')), 
+            "fecha_fin_actividad": forms.DateInput(attrs={"type":"date","class":"form-control", "autocomplete":"off",},format=('%Y-%m-%d')), 
             "estado": forms.Select(attrs={"class":"form-select", "autocomplete":"off",})
         }

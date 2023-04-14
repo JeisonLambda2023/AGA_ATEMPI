@@ -15,6 +15,7 @@
     <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/DataTables/Responsive/dataTables.min.css' %}">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -22,6 +23,7 @@
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
     <script src="{% static 'js/main.js' %}"></script>
+    <title>{% block titulo %}{% endblock titulo %}</title>
 </head>
 <body id="body-pd">
     
@@ -41,7 +43,7 @@
     <ul class="menu">
       
         <li class="{% if request.path == '/Administracion/Calendario/'%}active{% endif %}">
-          <a  href="{% url 'calendario' %}">
+          <a  href="{% url 'Inicio' %}">
             <!-- <i class='bx bx-calendar icono'></i> -->
             <img class="icono" src="{% static 'img/IconoInicio.png' %}" alt="">
             <span class="item">Inicio</span>
@@ -50,16 +52,16 @@
         </li>
 
         <li class="{% if request.path == '/Administracion/Calendario/'%}active{% endif %}">
-            <a  href="{% url 'calendario' %}">
+            <a  href="{% url 'Accesos' %}">
               <!-- <i class='bx bx-calendar icono'></i> -->
-              <img class="icono" src="{% static 'img/IconoControlaccesos.png' %}" alt="">
+              <img class="icono" src="{% static 'img/IconoAccesos.png' %}" alt="">
               <span class="item">Control de acceso</span>
             </a>
          
         </li>
 
         <li class="{% if request.path == '/Administracion/Calendario/'%}active{% endif %}">
-            <a  href="{% url 'calendario' %}">
+            <a  href="{% url 'Usuarios' %}">
                 <img class="icono" style="width: 25px;" src="{% static 'img/IconoUsuarios.png' %}" alt="">
               <span class="item">Usuarios</span>
             </a>
@@ -67,7 +69,7 @@
         </li>
 
         <li class="{% if request.path == '/Administracion/Calendario/'%}active{% endif %}">
-            <a  href="{% url 'calendario' %}">
+            <a  href="{% url 'Personal' %}">
                 <img class="icono" src="{% static 'img/IconoPersonal.png' %}" alt="">
                 <span class="item">Personal</span>
             </a>
@@ -75,15 +77,15 @@
         </li>
 
         <li class="{% if request.path == '/Administracion/Calendario/'%}active{% endif %}">
-            <a  href="{% url 'calendario' %}">
-                <img class="icono" src="{% static 'img/IconoPuntosdeacceso.png' %}" alt="">
+            <a  href="{% url 'Portales' %}">
+                <img class="icono" src="{% static 'img/IconoPortales.png' %}" alt="">
               <span class="item">Puntos de acceso</span>
             </a>
          
         </li>
 
         <li class="{% if request.path == '/Administracion/Calendario/'%}active{% endif %}">
-            <a  href="{% url 'calendario' %}">
+            <a  href="{% url 'Empresas' %}">
                 <img class="icono" style="width: 27px;" src="{% static 'img/IconoEmpresas.png' %}" alt="">
                 <span class="item">Empresas</span>
             </a>
@@ -91,7 +93,7 @@
         </li>
 
         <li class="{% if request.path == '/Administracion/Calendario/'%}active{% endif %}">
-            <a  href="{% url 'calendario' %}">
+            <a  href="{% url 'Permisos' %}">
                 <img class="icono" style="width: 27px;" src="{% static 'img/IconoPermisos.png' %}" alt="">
               <span class="item">Permisos</span>
             </a>
@@ -99,8 +101,8 @@
         </li>
 
         <li class="{% if request.path == '/Administracion/Calendario/'%}active{% endif %}">
-            <a  href="{% url 'calendario' %}">
-                <img class="icono" style="width: 27px;" src="{% static 'img/IconoVehiculo.png' %}" alt="">
+            <a  href="{% url 'Vehiculos' %}">
+                <img class="icono" style="width: 27px;" src="{% static 'img/IconoVehiculo.jpg' %}" alt="">
                 <span class="item">Vehículos</span>
             </a>
         
@@ -118,7 +120,7 @@
         <div class="dropd close">
           <ul>
               
-              <li><a href="{% url 'logout' %}" style="color: #cf3322; cursor: pointer;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Cerrar sesión</a></li>
+              <li><a href="{% url 'Logout' %}" style="color: #cf3322; cursor: pointer;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Cerrar sesión</a></li>
           </ul>
         </div>
     </div>
@@ -150,7 +152,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-
+<script src="{% static 'libs/DataTables/Responsive/dataTables.min.js' %}"></script>
   <script>
 
     $(document).ready(function(){
