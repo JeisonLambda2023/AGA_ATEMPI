@@ -6,7 +6,7 @@
 
 {% block contenido %}
     
-    <div class="height-100 bg-light"> <br><br><br><br>
+    <div class="height-100 bg-light"> 
         <h4 style="color: black; text-align: center;">MÓDULO DE PERSONAL <br><br> <button type="button" class="btn btn-primary" onclick="abrirModalCrear()">
             <i class="fa solid fa-plus"></i> Crear registro
            </button> </h4>
@@ -29,7 +29,15 @@
             <tbody>
                 {% for per in personal %}
                 <tr>
-                    <td>{{per.tipo_persona}}</td>
+                    {% if per.tipo_persona == "1" %}
+                    <td>Empleado</td>
+                    {% elif per.tipo_persona == "2" %}
+                    <td>Proveedor</td>
+                    {% elif per.tipo_persona == "3" %}
+                    <td>Visitante</td>
+                    {% elif per.tipo_persona == "4" %}
+                    <td>Contratista</td>
+                    {% endif %}
                     <td>{{per.documento}}</td>
                     <td>{{per.nombre_completo}}</td>
                     <td>{{per.empresa}}</td>

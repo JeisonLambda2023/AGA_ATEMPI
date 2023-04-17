@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import AuthenticationForm, UsernameField
 from django import forms
-from .models import Usuario, PuntoAcceso, Empresa, Personal
+from .models import *
 
 class LoginForm(AuthenticationForm):
     username = UsernameField(
@@ -67,6 +67,25 @@ class PersonalForm(forms.ModelForm):
             "portal_autorizado": forms.Select(attrs={"class":"form-select"}),
             "observaciones": forms.TextInput(attrs={"class":"form-control", "autocomplete":"off",}), 
             "tipo_persona": forms.Select(attrs={"class":"form-select"}),
+            "fecha_inicio_actividad": forms.DateInput(attrs={"type":"date","class":"form-control", "autocomplete":"off",},format=('%Y-%m-%d')), 
+            "fecha_fin_actividad": forms.DateInput(attrs={"type":"date","class":"form-control", "autocomplete":"off",},format=('%Y-%m-%d')), 
+            "estado": forms.Select(attrs={"class":"form-select", "autocomplete":"off",})
+        }
+        
+        
+class VehiculosForm(forms.ModelForm):
+    class Meta:
+        model = Vehiculo
+        fields = ["placa", "marca", "modelo", "color","empresa", "observaciones", "foto", "tipo_vehiculo", "fecha_inicio_actividad", "fecha_fin_actividad", "estado"]
+        
+        widgets = {
+            "placa": forms.TextInput(attrs={"class":"form-control", "autocomplete":"off",}), 
+            "marca": forms.TextInput(attrs={"class":"form-control", "autocomplete":"off",}),
+            "modelo": forms.TextInput(attrs={"class":"form-control", "autocomplete":"off",}), 
+            "color": forms.TextInput(attrs={"class":"form-control", "autocomplete":"off",}), 
+            "empresa": forms.Select(attrs={"class":"form-select"}),
+            "observaciones": forms.TextInput(attrs={"class":"form-control", "autocomplete":"off",}), 
+            "tipo_vehiculo": forms.Select(attrs={"class":"form-select"}),
             "fecha_inicio_actividad": forms.DateInput(attrs={"type":"date","class":"form-control", "autocomplete":"off",},format=('%Y-%m-%d')), 
             "fecha_fin_actividad": forms.DateInput(attrs={"type":"date","class":"form-control", "autocomplete":"off",},format=('%Y-%m-%d')), 
             "estado": forms.Select(attrs={"class":"form-select", "autocomplete":"off",})

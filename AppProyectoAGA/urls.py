@@ -25,6 +25,9 @@ urlpatterns = [
     path('ModificarEmpresas/<int:pk>', login_required(views.modificarEmpresas.as_view()), name='modificarEmpresas'),
     path('EliminarEmpresa/<int:pk>', login_required(views.eliminarEmpresa.as_view()), name='eliminarEmpresa'),
     path('Permisos/', login_required(views.permisos), name='Permisos'),
-    path('Vehiculos/', login_required(views.vehiculos), name='Vehiculos'),
+    path('Vehiculos/', login_required(views.vehiculos.as_view()), name='Vehiculos'),
+    path('CrearVehiculo/', login_required(views.crearVehiculo.as_view()), name='crearVehiculo'),
+    path('ModificarVehiculo/<int:pk>', login_required(views.modificarVehiculo.as_view()), name='modificarVehiculo'),
+    path('EliminarVehiculo/<int:pk>', login_required(views.eliminarVehiculo.as_view()), name='eliminarVehiculo'),
     path("Logout/", LogoutView.as_view(),{'next_page': settings.LOGOUT_REDIRECT_URL}, name="Logout"),
 ]

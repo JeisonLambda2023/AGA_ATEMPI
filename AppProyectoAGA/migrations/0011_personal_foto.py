@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='personal',
             name='foto',
-            field=models.ImageField(blank=True, default='user.png', null=True, upload_to=AppProyectoAGA.models.guardar_imagen, verbose_name='Imagen del personal'),
+            field=models.ImageField(blank=True, default='user.png', null=True, upload_to=AppProyectoAGA.models.guardar_imagen_personal, verbose_name='Imagen del personal'),
         ),
     ]

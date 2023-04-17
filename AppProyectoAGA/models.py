@@ -5,6 +5,7 @@ import os
 
 
 DEFAULT_IMG_USER = "user.png"
+DEFAULT_IMG_CAR = "vehiculo.png"
 
 ESTADOS=(
     ("1", "Activo"),
@@ -21,6 +22,13 @@ TIPOS_PERSONA=(
     ("2", "Proveedor"),
     ("3", "Visitante"),
     ("4", "Contratista")
+)
+
+TIPOS_VEHICULO=(
+    ("1", "Camión"),
+    ("2", "Camioneta"),
+    ("3", "Motocicleta"),
+    ("4", "Volqueta")
 )
 
 class PuntoAcceso(models.Model):
@@ -113,8 +121,11 @@ def extension(file):
         name, extension = os.path.splitext(file)
         return extension
     
-def guardar_imagen(instance, filename):
+def guardar_imagen_personal(instance, filename):
     return  f"Fotos_personal/{instance.nombre_completo}_{instance.documento}/imagen{extension(filename)}"
+
+def guardar_imagen_vehiculo(instance, filename):
+    return  f"Fotos_vehiculos/{instance.tipo_vehiculo}_{instance.placa}/imagen{extension(filename)}"
 
 class Personal(models.Model):
     documento = models.CharField(max_length=100)
@@ -125,9 +136,26 @@ class Personal(models.Model):
     fecha_fin_actividad = models.DateField(default=datetime.date.today)
     observaciones = models.TextField(max_length=300, null=True, blank=True)
     tipo_persona = models.CharField(max_length=5,choices=TIPOS_PERSONA, null=False, blank=False)
-    foto = models.ImageField("Imagen del personal", upload_to=guardar_imagen,blank=True, null=True, default=DEFAULT_IMG_USER)
+    foto = models.ImageField("Imagen del personal", upload_to=guardar_imagen_personal,blank=True, null=True, default=DEFAULT_IMG_USER)
     estado = models.CharField(max_length=5, choices=ESTADOS, default=1)
     borrado = models.BooleanField(null=True, blank=True, default=False)
  
     def __str__(self):
         return self.nombre_completo.upper()
+    
+class Vehiculo(models.Model):
+    placa = models.CharField(max_length=10)
+    marca = models.CharField(max_length=50)
+    modelo = models.CharField(max_length=10)
+    color = models.CharField(max_length=50)
+    empresa = models.ForeignKey(Empresa, on_delete=models.SET_NULL, null=True)
+    fecha_inicio_actividad = models.DateField(default=datetime.date.today)
+    fecha_fin_actividad = models.DateField(default=datetime.date.today)
+    observaciones = models.TextField(max_length=300, null=True, blank=True)
+    tipo_vehiculo = models.CharField(max_length=5,choices=TIPOS_VEHICULO, null=False, blank=False)
+    foto = models.ImageField("Imagen del vehiculo", upload_to=guardar_imagen_vehiculo,blank=True, null=True, default=DEFAULT_IMG_CAR)
+    estado = models.CharField(max_length=5, choices=ESTADOS, default=1)
+    borrado = models.BooleanField(null=True, blank=True, default=False)
+ 
+    def __str__(self):
+        return self.placa.upper()

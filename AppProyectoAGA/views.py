@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from AppProyectoAGA.models import PuntoAcceso, Usuario, Empresa, Personal
+from AppProyectoAGA.models import *
 from django.contrib.auth.views import LoginView
-from .forms import  LoginForm, PuntoAccesoForm, EmpresaForm, UsuarioForm, PersonalForm
+from .forms import  *
 from django.shortcuts import  redirect
 from django.contrib.auth import authenticate, login
 from datetime import datetime
@@ -255,5 +255,55 @@ class eliminarEmpresa(View):
 def permisos(request):
     return render(request, "AppProyectoAGA/Permisos.html")
 
-def vehiculos(request):
-    return render(request, "AppProyectoAGA/Vehiculos.html")
+class vehiculos(View):
+    def get(self, request, *args, **kwargs):
+        empresas = Empresa.objects.filter(borrado=False, estado="1")
+        vehiculos = Vehiculo.objects.filter(borrado=False, estado="1")
+        contexto={'vehiculos': vehiculos, "form":VehiculosForm(),'empresas': empresas}
+        return render(request, "AppProyectoAGA/Vehiculos.html", contexto)
+    
+
+class crearVehiculo(CreateView):
+    model = Vehiculo
+    form_class = VehiculosForm
+    template_name = "AppProyectoAGA/Vehiculos.html"
+    success_url = reverse_lazy("Vehiculos")
+    
+    def form_valid(self, form):
+        form.save()
+        return JsonResponse({"status":"OK"}, status=200)
+    
+    def form_invalid(self, form):
+        print(form.errors)
+        return JsonResponse({"status":"ERROR", "errores":form.errors}, status=400)
+    
+    def post(self, request, *args, **kwargs):
+        print(request.FILES)
+        return super().post(request, *args, **kwargs)
+
+class modificarVehiculo(UpdateView):
+    model = Vehiculo
+    form_class = VehiculosForm
+    template_name = "AppProyectoAGA/Vehiculos/modificar.html"
+    success_url = reverse_lazy("Vehiculos")
+    
+    def post(self, request, *args, **kwargs):
+        print(request.FILES)
+        return super().post(request, *args, **kwargs)
+    
+    
+    def form_invalid(self, form):
+        print(form.errors)
+        return JsonResponse({"status":"ERROR", "errores":form.errors}, status=400)
+    
+class eliminarVehiculo(View):
+    model = Vehiculo
+    
+    def post(self, request, *args, **kwargs):
+        try:
+            personal = self.model.objects.get(pk=kwargs["pk"])
+            personal.borrado = True
+            personal.save()
+            return JsonResponse({"estado":True}, status=200)
+        except Exception as e:
+            return JsonResponse({"estado":True, "error":str(e)}, status=400)
