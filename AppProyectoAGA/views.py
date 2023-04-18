@@ -307,3 +307,5 @@ class eliminarVehiculo(View):
             return JsonResponse({"estado":True}, status=200)
         except Exception as e:
             return JsonResponse({"estado":True, "error":str(e)}, status=400)
+        
+        

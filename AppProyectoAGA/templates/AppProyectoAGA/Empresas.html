@@ -8,8 +8,12 @@
     
     <div class="height-100 bg-light">
         <h4 style="color: black; text-align: center;">MÓDULO DE EMPRESAS <br><br> <button type="button" class="btn btn-primary" onclick="abrirModalCrear()">
-            <i class="fa solid fa-plus"></i> Crear registro
-           </button> </h4>
+            <i class="fa solid fa-plus"></i> Crear registro</button> 
+            <a href="{% url 'exportarEmpresas' %}" class="btn btn-success">
+                <i class="fa-solid fa-file-export"></i> Exportar datos </a>
+               <a href="{% url 'exportarEmpresas' %}" class="btn btn-success">
+                <i class="fa-solid fa-file-import"></i> Importar datos </a>
+            </h4>
         
         <br>
         <table id="example" class="table table-striped" style="width:100%">
