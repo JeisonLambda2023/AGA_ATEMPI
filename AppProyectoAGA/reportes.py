@@ -46,15 +46,15 @@ def exportarVehiculos(request):
         excel['Tipo vehiculo'] = Tipo_vehiculo
         excel['Estado'] = Estado
         
-        with BytesIO() as b:
-            writer = pd.ExcelWriter(b, engine='xlsxwriter')
-            excel.to_excel(writer, sheet_name='Vehiculos', index=False)
-            writer.save()
-            filename = "Vehiculos_AGA"
-            content_type = 'application/vnd.ms-excel'
-            response = HttpResponse(b.getvalue(), content_type=content_type)
-            response['Content-Disposition'] = 'attachment; filename="' + filename + '.xlsx"'
-            return response
+    with BytesIO() as b:
+        writer = pd.ExcelWriter(b, engine='xlsxwriter')
+        excel.to_excel(writer, sheet_name='Vehiculos', index=False)
+        writer.save()
+        filename = "Vehiculos_AGA"
+        content_type = 'application/vnd.ms-excel'
+        response = HttpResponse(b.getvalue(), content_type=content_type)
+        response['Content-Disposition'] = 'attachment; filename="' + filename + '.xlsx"'
+        return response
         
 
 def exportarPersonal(request):
@@ -92,15 +92,15 @@ def exportarPersonal(request):
         excel['Tipo persona'] = Tipo_persona
         excel['Estado'] = Estado
         
-        with BytesIO() as b:
-            writer = pd.ExcelWriter(b, engine='xlsxwriter')
-            excel.to_excel(writer, sheet_name='Personal', index=False)
-            writer.save()
-            filename = "Personal_AGA"
-            content_type = 'application/vnd.ms-excel'
-            response = HttpResponse(b.getvalue(), content_type=content_type)
-            response['Content-Disposition'] = 'attachment; filename="' + filename + '.xlsx"'
-            return response
+    with BytesIO() as b:
+        writer = pd.ExcelWriter(b, engine='xlsxwriter')
+        excel.to_excel(writer, sheet_name='Personal', index=False)
+        writer.save()
+        filename = "Personal_AGA"
+        content_type = 'application/vnd.ms-excel'
+        response = HttpResponse(b.getvalue(), content_type=content_type)
+        response['Content-Disposition'] = 'attachment; filename="' + filename + '.xlsx"'
+        return response
         
         
 def exportarEmpresas(request):
@@ -125,15 +125,15 @@ def exportarEmpresas(request):
         excel['Fecha fin actividad'] = Fecha_fin_actividad
         excel['Estado'] = Estado
         
-        with BytesIO() as b:
-            writer = pd.ExcelWriter(b, engine='xlsxwriter')
-            excel.to_excel(writer, sheet_name='Empresas', index=False)
-            writer.save()
-            filename = "Empresas_AGA"
-            content_type = 'application/vnd.ms-excel'
-            response = HttpResponse(b.getvalue(), content_type=content_type)
-            response['Content-Disposition'] = 'attachment; filename="' + filename + '.xlsx"'
-            return response
+    with BytesIO() as b:
+        writer = pd.ExcelWriter(b, engine='xlsxwriter')
+        excel.to_excel(writer, sheet_name='Empresas', index=False)
+        writer.save()
+        filename = "Empresas_AGA"
+        content_type = 'application/vnd.ms-excel'
+        response = HttpResponse(b.getvalue(), content_type=content_type)
+        response['Content-Disposition'] = 'attachment; filename="' + filename + '.xlsx"'
+        return response
         
         
 def exportarPortales(request):
@@ -154,11 +154,42 @@ def exportarPortales(request):
         excel['Longitud'] = Longitud
         excel['Estado'] = Estado
         
+    with BytesIO() as b:
+        writer = pd.ExcelWriter(b, engine='xlsxwriter')
+        excel.to_excel(writer, sheet_name='Puntos de Acceso', index=False)
+        writer.save()
+        filename = "PuntosDeAcceso_AGA"
+        content_type = 'application/vnd.ms-excel'
+        response = HttpResponse(b.getvalue(), content_type=content_type)
+        response['Content-Disposition'] = 'attachment; filename="' + filename + '.xlsx"'
+        return response
+        
+        
+def exportarPermisos(request):
+    permisos = Permiso.objects.filter(borrado=False)
+    Portal_autorizado,Personal,Fecha_inicio_actividad,Fecha_fin_actividad,Estado=[[],[],[],[],[]]
+    for i in permisos:
+        Portal_autorizado.append(i.portal_autorizado)
+        Personal.append(i.personal)
+        Fecha_inicio_actividad.append(i.fecha_inicio_actividad)
+        Fecha_fin_actividad.append(i.fecha_fin_actividad)
+        if(i.estado == "1"):
+            Estado.append("Activo")
+        else:
+            Estado.append("Inactivo")
+            
+        excel = pd.DataFrame()
+        excel['Portal autorizado'] = Portal_autorizado
+        excel['Personal'] = Personal
+        excel['Fecha inicio actividad'] = Fecha_inicio_actividad
+        excel['Fecha fin actividad'] = Fecha_fin_actividad
+        excel['Estado'] = Estado
+        
         with BytesIO() as b:
             writer = pd.ExcelWriter(b, engine='xlsxwriter')
-            excel.to_excel(writer, sheet_name='Puntos de Acceso', index=False)
+            excel.to_excel(writer, sheet_name='Personal', index=False)
             writer.save()
-            filename = "Puntos_de_acceso_AGA"
+            filename = "Permisos_AGA"
             content_type = 'application/vnd.ms-excel'
             response = HttpResponse(b.getvalue(), content_type=content_type)
             response['Content-Disposition'] = 'attachment; filename="' + filename + '.xlsx"'

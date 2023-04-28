@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="{% static 'libs/bootstrap/css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'libs/fontawesome/css/all.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="{% static 'libs/bootstrap/css/bootstrap.css' %}">
     <link rel="icon" href="{% static 'img/Logo2.png' %}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
@@ -41,7 +40,7 @@
     </div>
     <hr>
     <ul class="menu">
-      
+        
         <li class="{% if request.path == '/Administracion/Calendario/'%}active{% endif %}">
           <a  href="{% url 'Inicio' %}">
             <!-- <i class='bx bx-calendar icono'></i> -->
@@ -60,6 +59,7 @@
          
         </li>
 
+        
         <li class="{% if request.path == '/Administracion/Calendario/'%}active{% endif %}">
             <a  href="{% url 'Usuarios' %}">
                 <img class="icono" style="width: 25px;" src="{% static 'img/IconoUsuarios.png' %}" alt="">
@@ -107,7 +107,7 @@
             </a>
         
         </li>
-
+        
        
     </ul>
 </nav>

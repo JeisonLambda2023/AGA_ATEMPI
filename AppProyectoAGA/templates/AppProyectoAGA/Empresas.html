@@ -87,7 +87,6 @@
     </div>
     <div class="modal fade" id="modificarEmpresaModal" data-bs-backdrop="static" data-bs-keyboard="false" ></div>
 </body>
-<script src="{% static 'js/main.js' %}"></script>
 <script>
     function abrirModalCrear(){
     $("#empresaModal").appendTo("body").modal("show")
@@ -100,7 +99,13 @@
             type:form.attr("method"),
             data: form.serialize(),
             success: function(data){
-                location.reload()
+                Swal.fire(
+                'Éxito!',
+                'Se ha registrado la empresa correctamente',
+                'success'
+                ).then(function(){
+                    location.reload()
+                })
             },
             error: function(errores){
                 console.log(errores.responseJSON["errores"]);
@@ -171,7 +176,7 @@
 function eliminarEmpresa(url){
     Swal.fire({
     title: '¿Estás seguro?',
-    text: "Al eliminar este elemento no se podrá revertir el cambio!",
+    text: "Al eliminar esta empresa no se podrá revertir el cambio!",
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
@@ -186,8 +191,8 @@ function eliminarEmpresa(url){
         data: {"csrfmiddlewaretoken":csrftoken},
         success: function(){
             Swal.fire(
-            'Correcto!',
-            'Se ha eliminado el elemento',
+            'Éxito!',
+            'Se ha eliminado la empresa correctamente',
             'success'
             ).then(function(){
                 location.reload()

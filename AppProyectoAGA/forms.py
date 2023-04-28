@@ -40,6 +40,17 @@ class EmpresaForm(forms.ModelForm):
             "estado": forms.Select(attrs={"class":"form-select", "autocomplete":"off",})
         }
         
+    def clean_fecha_inicio_actividad(self):
+        self.fecha_inicio_actividad=self.cleaned_data["fecha_inicio_actividad"]
+        return self.fecha_inicio_actividad
+        
+    def clean_fecha_fin_actividad(self):
+        fin = self.cleaned_data["fecha_fin_actividad"]
+        if(fin < self.fecha_inicio_actividad):
+            raise forms.ValidationError("La fecha de fin de actividad debe ser mayor o igual a la fecha de inicio de actividad")
+        else:
+            return fin
+        
 
 class UsuarioForm(forms.ModelForm):
     class Meta:
@@ -56,6 +67,12 @@ class UsuarioForm(forms.ModelForm):
         
         
 class PersonalForm(forms.ModelForm):
+    
+    def __init__(self, *args, **kwargs):
+        super(PersonalForm, self).__init__(*args, **kwargs)
+        self.fields["empresa"].queryset = Empresa.objects.filter(borrado=False).filter(estado="1")
+        self.fields["portal_autorizado"].queryset = PuntoAcceso.objects.filter(borrado=False).filter(estado="1")
+    
     class Meta:
         model = Personal
         fields = ["documento", "nombre_completo", "empresa", "portal_autorizado", "observaciones", "foto", "tipo_persona", "fecha_inicio_actividad", "fecha_fin_actividad", "estado"]
@@ -72,8 +89,24 @@ class PersonalForm(forms.ModelForm):
             "estado": forms.Select(attrs={"class":"form-select", "autocomplete":"off",})
         }
         
+    def clean_fecha_inicio_actividad(self):
+        self.fecha_inicio_actividad=self.cleaned_data["fecha_inicio_actividad"]
+        return self.fecha_inicio_actividad
+        
+    def clean_fecha_fin_actividad(self):
+        fin = self.cleaned_data["fecha_fin_actividad"]
+        if(fin < self.fecha_inicio_actividad):
+            raise forms.ValidationError("La fecha de fin de actividad debe ser mayor o igual a la fecha de inicio de actividad")
+        else:
+            return fin
+            
+        
         
 class VehiculosForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(VehiculosForm, self).__init__(*args, **kwargs)
+        self.fields["empresa"].queryset = Empresa.objects.filter(borrado=False).filter(estado="1")
+    
     class Meta:
         model = Vehiculo
         fields = ["placa", "marca", "modelo", "color","empresa", "observaciones", "foto", "tipo_vehiculo", "fecha_inicio_actividad", "fecha_fin_actividad", "estado"]
@@ -90,3 +123,40 @@ class VehiculosForm(forms.ModelForm):
             "fecha_fin_actividad": forms.DateInput(attrs={"type":"date","class":"form-control", "autocomplete":"off",},format=('%Y-%m-%d')), 
             "estado": forms.Select(attrs={"class":"form-select", "autocomplete":"off",})
         }
+        
+    def clean_fecha_inicio_actividad(self):
+        self.fecha_inicio_actividad=self.cleaned_data["fecha_inicio_actividad"]
+        return self.fecha_inicio_actividad
+        
+    def clean_fecha_fin_actividad(self):
+        fin = self.cleaned_data["fecha_fin_actividad"]
+        if(fin < self.fecha_inicio_actividad):
+            raise forms.ValidationError("La fecha de fin de actividad debe ser mayor o igual a la fecha de inicio de actividad")
+        else:
+            return fin
+        
+        
+class PermisosForm(forms.ModelForm):
+    class Meta:
+        model = Permiso
+        fields = ["portal_autorizado", "personal", "fecha_inicio_actividad", "fecha_fin_actividad", "estado"]
+        
+        widgets = {
+            "portal_autorizado": forms.Select(attrs={"class":"form-select"}),
+            "personal": forms.Select(attrs={"class":"form-select"}),
+            "fecha_inicio_actividad": forms.DateInput(attrs={"type":"date","class":"form-control", "autocomplete":"off",},format=('%Y-%m-%d')), 
+            "fecha_fin_actividad": forms.DateInput(attrs={"type":"date","class":"form-control", "autocomplete":"off",},format=('%Y-%m-%d')), 
+            "estado": forms.Select(attrs={"class":"form-select", "autocomplete":"off",})
+        }
+        
+
+class AccesosForm(forms.ModelForm):
+    class Meta:
+        model = Acceso
+        fields = ["ingreso"]
+        
+        widgets = {
+            "ingreso": forms.Select(attrs={"class":"form-select"})
+        }
+        
+    

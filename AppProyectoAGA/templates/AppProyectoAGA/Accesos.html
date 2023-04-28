@@ -1,0 +1,203 @@
+{% extends './base.html' %}  
+
+{% load static %}
+{% block titulo %}AGA - ACCESOS{% endblock titulo %}
+
+{% block contenido %}
+    
+    <div class="height-100 bg-light">
+        <h4 style="color: black; text-align: center;">MÓDULO DE ACCESOS <br><br> <button type="button" class="btn btn-primary" onclick="abrirModalCrear()">
+            <i class="fa solid fa-plus"></i> Registrar entrada/salida</button>
+            </h4>
+        
+            <br><br>
+        <h3 style="color: black; text-align: center;">PERSONAL INGRESADO EL DÍA DE HOY</h3>
+        <table id="example" class="table table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Tipo persona</th>
+                    <th>Documento</th>
+                    <th>Nombre completo</th>
+                    <th>Empresa</th>
+                    <th>Punto de acceso donde entró</th>
+                    <th>Fecha de ingreso</th>
+                    <th>Fecha de salida</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for per in accesos %}
+                    {% if per.ingreso == "1" %}
+                    <tr>
+                        <td>{{per.personal.get_tipo_persona_display}}</td>
+                        <td>{{per.personal.documento}}</td>
+                        <td>{{per.personal.nombre_completo}}</td>
+                        <td>{{per.personal.empresa}}</td>
+                        <td>{{per.personal.portal_autorizado}}</td>
+                        <td>{{per.fecha_ingreso}}</td>
+                        {% if per.fecha_salida%}
+                        <td>{{per.fecha_salida}}</td>
+                        {% else %}
+                        <td>No se ha registrado su salida</td>
+                        {% endif %}
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+        <br><br>
+        <h3 style="color: black; text-align: center;">VEHICULOS INGRESADO EL DÍA DE HOY</h3>
+        <table id="example2" class="table table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Tipo vehiculo</th>
+                    <th>Placa</th>
+                    <th>Marca</th>
+                    <th>Color</th>
+                    <th>Empresa</th>
+                    <th>Punto de acceso donde entró</th>
+                    <th>Fecha de ingreso</th>
+                    <th>Fecha de salida</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for veh in accesos %}
+                {% if veh.ingreso == "2" %}
+                    <tr>
+                        <td>{{veh.vehiculo.get_tipo_vehiculo_display}}</td>
+                        <td>{{veh.vehiculo.placa}}</td>
+                        <td>{{veh.vehiculo.marca}}</td>
+                        <td>{{veh.vehiculo.color}}</td>
+                        <td>{{veh.vehiculo.empresa}}</td>
+                        <td>{{veh.portal}}</td>
+                        <td>{{veh.fecha_ingreso}}</td>
+                        {% if veh.fecha_salida%}
+                        <td>{{veh.fecha_salida}}</td>
+                        {% else %}
+                        <td>No se ha registrado su salida</td>
+                        {% endif %}
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+
+    <div class="modal fade" id="accesos1Modal" tabindex="-1" aria-labelledby="accesos1Modal" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Registrar acceso</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <form action="" method="post" id="validarEntradaForm">
+                {% csrf_token %}
+                <Label style="font-size: 15px;"><strong>¿Qué ingresa/sale?: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
+                {{form.ingreso}}
+                <p id="ingreso" class="bg-light error_text" style="color: #dc3545;"></p>
+                <Label style="font-size: 15px;"><strong>Documento/Placa: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
+                <input type="text" class="form-control" name="doc">
+                <p id="doc" class="bg-light error_text" style="color: #dc3545;"></p>
+            </form>
+            </div>
+            <div id="erroresAccesoBox" class="alert alert-danger" role="alert" style="display: none;">
+                <p id="accesoError"></p>
+              </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-success" onclick="validarEntrada()">Validar</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="InformacionAcceso" tabindex="-1" aria-labelledby="accesos2Modal" aria-hidden="true"></div>
+
+</body>
+<script>
+    function abrirModalCrear(){
+    $("#accesos1Modal").appendTo("body").modal("show")
+}
+
+    function validarEntrada(){
+        form = $("#validarEntradaForm")
+        $("#erroresAccesoBox").css("display","none")
+        $("#accesoError").text("");
+        $.ajax({
+            url:form.attr("action"),
+            type:form.attr("method"),
+            data: form.serialize(),
+            success: function(data){
+                $("#accesos1Modal").modal("hide")
+                url = data["response"]
+                $("#InformacionAcceso").load(url, function(){
+                    $(this).appendTo("body").modal("show")
+                })
+            },
+            error: function(errores){
+                $("#accesoError").text(errores.responseJSON["errores"]);
+                $("#erroresAccesoBox").css("display","block")
+            }
+        })
+    }
+
+    document.addEventListener("DOMContentLoaded", function(event) {
+   
+   const showNavbar = (toggleId, navId, bodyId, headerId) =>{
+   const toggle = document.getElementById(toggleId),
+   nav = document.getElementById(navId),
+   bodypd = document.getElementById(bodyId),
+   headerpd = document.getElementById(headerId)
+   
+   // Validate that all variables exist
+   if(toggle && nav && bodypd && headerpd){
+   toggle.addEventListener('click', ()=>{
+   // show navbar
+   nav.classList.toggle('show')
+   // change icon
+   toggle.classList.toggle('bx-x')
+   // add padding to body
+   bodypd.classList.toggle('body-pd')
+   // add padding to header
+   headerpd.classList.toggle('body-pd')
+   })
+   }
+   }
+   
+   showNavbar('header-toggle','nav-bar','body-pd','header')
+   
+   const linkColor = document.querySelectorAll('.nav_link')
+   
+   function colorLink(){
+   if(linkColor){
+   linkColor.forEach(l=> l.classList.remove('active'))
+   this.classList.add('active')
+   }
+   }
+   linkColor.forEach(l=> l.addEventListener('click', colorLink))
+   
+    
+   });
+
+   $(document).ready(function () {
+    $('#example').DataTable({
+        "language":{"url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"},
+    });
+
+    
+});
+
+$(document).ready(function () {
+    $('#example2').DataTable({
+        "language":{"url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"},
+    });
+
+    
+});
+
+
+
+</script>
+{% endblock contenido %}

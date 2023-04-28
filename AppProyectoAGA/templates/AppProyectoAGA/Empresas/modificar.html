@@ -9,22 +9,22 @@
             {% csrf_token %}
             <Label style="font-size: 15px;"><strong>Nit: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
                 {{form.nit}}
-                <p id="nit" class="bg-light error_text" style="color: #dc3545;"></p>
+                <p id="_nit" class="bg-light error_text" style="color: #dc3545;"></p>
                 <Label style="font-size: 15px;"><strong>Razón social: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
                 {{form.razon_social}}
-                <p id="razon_social" class="bg-light error_text" style="color: #dc3545;"></p>
+                <p id="_razon_social" class="bg-light error_text" style="color: #dc3545;"></p>
                 <Label style="font-size: 15px;"><strong>Área de servicios: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
                 {{form.area_servicio}}
-                <p id="area_servicio" class="bg-light error_text" style="color: #dc3545;"></p>
+                <p id="_area_servicio" class="bg-light error_text" style="color: #dc3545;"></p>
                 <Label style="font-size: 15px;"><strong>Fecha inicio de actividades: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
                 {{form.fecha_inicio_actividad}}
-                <p id="fecha_inicio_actividad" class="bg-light error_text" style="color: #dc3545;"></p>
+                <p id="_fecha_inicio_actividad" class="bg-light error_text" style="color: #dc3545;"></p>
                 <Label style="font-size: 15px;"><strong>Fecha fin de actividades: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
                 {{form.fecha_fin_actividad}}
-                <p id="fecha_fin_actividad" class="bg-light error_text" style="color: #dc3545;"></p>
+                <p id="_fecha_fin_actividad" class="bg-light error_text" style="color: #dc3545;"></p>
             <Label style="font-size: 15px;"><strong>Estado <sup class="required"  style="color: #dc3545;">*</sup></strong></Label>
             {{form.estado}}
-            <p id="estado" class="bg-light error_text" style="color: #dc3545;"></p>
+            <p id="_estado" class="bg-light error_text" style="color: #dc3545;"></p>
         </form>
       </div>
       <div class="modal-footer">
@@ -41,7 +41,13 @@
             type:form.attr("method"),
             data: form.serialize(),
             success: function(data){
-                location.reload()
+              Swal.fire(
+                'Éxito!',
+                'Se ha modificado la empresa correctamente',
+                'success'
+                ).then(function(){
+                    location.reload()
+                })
             },
             error: function(errores){
                 console.log(errores.responseJSON["errores"]);
@@ -54,7 +60,7 @@
                     let y=form.find('select[name='+i+']')
                     x.addClass("is-invalid")
                     y.addClass("is-invalid")
-                    $("#"+i).text(errores[i])
+                    $("#_"+i).text(errores[i])
             }
             }
         })

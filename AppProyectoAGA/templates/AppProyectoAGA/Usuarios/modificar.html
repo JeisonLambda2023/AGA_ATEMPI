@@ -9,19 +9,19 @@
             {% csrf_token %}
             <Label style="font-size: 15px;"><strong>Documento: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
             {{form.documento}}
-            <p id="nombre" class="bg-light error_text" style="color: #dc3545;"></p>
+            <p id="_nombre" class="bg-light error_text" style="color: #dc3545;"></p>
             <Label style="font-size: 15px;"><strong>Nombre de usuario: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
             {{form.nombre}}
-            <p id="latitud" class="bg-light error_text" style="color: #dc3545;"></p>
+            <p id="_latitud" class="bg-light error_text" style="color: #dc3545;"></p>
             <Label style="font-size: 15px;"><strong>Rol: <sup class="required"  style="color: #dc3545;">*</sup></strong></Label>
             {{form.rol}}
-            <p id="longitud" class="bg-light error_text" style="color: #dc3545;"></p>
+            <p id="_longitud" class="bg-light error_text" style="color: #dc3545;"></p>
             <Label style="font-size: 15px;"><strong>Nueva contraseña: <sup class="required"  style="color: #dc3545;">*</sup></strong></Label>
             {{form.password}}
-            <p id="password" class="bg-light error_text" style="color: #dc3545;"></p>
+            <p id="_password" class="bg-light error_text" style="color: #dc3545;"></p>
             <Label style="font-size: 15px;"><strong>Estado <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
             {{form.estado}}
-            <p id="estado" class="bg-light error_text" style="color: #dc3545;"></p>
+            <p id="_estado" class="bg-light error_text" style="color: #dc3545;"></p>
         </form>
       </div>
       <div class="modal-footer">
@@ -38,7 +38,13 @@
             type:form.attr("method"),
             data: form.serialize(),
             success: function(data){
-                location.reload()
+              Swal.fire(
+                'Éxito!',
+                'Se ha modificado el usuario correctamente',
+                'success'
+                ).then(function(){
+                    location.reload()
+                })
             },
             error: function(errores){
                 console.log(errores.responseJSON["errores"]);
@@ -51,7 +57,7 @@
                     let y=form.find('select[name='+i+']')
                     x.addClass("is-invalid")
                     y.addClass("is-invalid")
-                    $("#"+i).text(errores[i])
+                    $("#_"+i).text(errores[i])
             }
             }
         })

@@ -11,34 +11,34 @@
           <input type="file" style="display:none" name="foto" id="imagenId">
           <Label style="font-size: 15px;"><strong>Tipo de vehiculo: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
                 {{form.tipo_vehiculo}}
-                <p id="tipo_vehiculo" class="bg-light error_text" style="color: #dc3545;"></p>
+                <p id="_tipo_vehiculo" class="bg-light error_text" style="color: #dc3545;"></p>
                 <Label style="font-size: 15px;"><strong>Placa: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
                 {{form.placa}}
-                <p id="placa" class="bg-light error_text" style="color: #dc3545;"></p>
+                <p id="_placa" class="bg-light error_text" style="color: #dc3545;"></p>
                 <Label style="font-size: 15px;"><strong>Marca: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
                 {{form.marca}}
-                <p id="marca" class="bg-light error_text" style="color: #dc3545;"></p>
+                <p id="_marca" class="bg-light error_text" style="color: #dc3545;"></p>
                 <Label style="font-size: 15px;"><strong>Modelo: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
                 {{form.modelo}}
-                <p id="modelo" class="bg-light error_text" style="color: #dc3545;"></p>
+                <p id="_modelo" class="bg-light error_text" style="color: #dc3545;"></p>
                 <Label style="font-size: 15px;"><strong>Color: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
                 {{form.color}}
-                <p id="color" class="bg-light error_text" style="color: #dc3545;"></p>
+                <p id="_color" class="bg-light error_text" style="color: #dc3545;"></p>
                 <Label style="font-size: 15px;"><strong>Empresa: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
                 {{form.empresa}}
-                <p id="empresa" class="bg-light error_text" style="color: #dc3545;"></p>
+                <p id="_empresa" class="bg-light error_text" style="color: #dc3545;"></p>
                 <Label style="font-size: 15px;"><strong>Fecha inicio de actividades: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
                 {{form.fecha_inicio_actividad}}
-                <p id="fecha_inicio_actividad" class="bg-light error_text" style="color: #dc3545;"></p>
+                <p id="_fecha_inicio_actividad" class="bg-light error_text" style="color: #dc3545;"></p>
                 <Label style="font-size: 15px;"><strong>Fecha fin de actividades: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
                 {{form.fecha_fin_actividad}}
-                <p id="fecha_fin_actividad" class="bg-light error_text" style="color: #dc3545;"></p>
+                <p id="_fecha_fin_actividad" class="bg-light error_text" style="color: #dc3545;"></p>
                 <Label style="font-size: 15px;"><strong>Observaciones: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
                 {{form.observaciones}}
-                <p id="observaciones" class="bg-light error_text" style="color: #dc3545;"></p>
+                <p id="_observaciones" class="bg-light error_text" style="color: #dc3545;"></p>
                 <Label style="font-size: 15px;"><strong>Estado <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
                 {{form.estado}}
-                <p id="estado" class="bg-light error_text" style="color: #dc3545;"></p>
+                <p id="_estado" class="bg-light error_text" style="color: #dc3545;"></p>
         </form>
       </div>
       <div class="modal-footer">
@@ -75,7 +75,13 @@
             contentType:false,
             processData: false,
             success: function(data){
-                location.reload()
+              Swal.fire(
+                'Éxito!',
+                'Se ha modificado el vehiculo correctamente',
+                'success'
+                ).then(function(){
+                    location.reload()
+                })
             },
             error: function(errores){
                 console.log(errores.responseJSON["errores"]);
@@ -88,7 +94,7 @@
                     let y=form.find('select[name='+i+']')
                     x.addClass("is-invalid")
                     y.addClass("is-invalid")
-                    $("#"+i).text(errores[i])
+                    $("#_"+i).text(errores[i])
             }
             }
         })

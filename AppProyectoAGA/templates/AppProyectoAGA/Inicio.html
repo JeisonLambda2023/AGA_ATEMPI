@@ -6,86 +6,20 @@
 
 {% block contenido %}
     
-    <div class="height-100 bg-light"> <br><br><br><br>
+    <div class="height-100 bg-light">
         <h4 style="color: black; text-align: center;">INICIO</h4>
-        
+        <br><br>
+        <h3 style="color: black; text-align: center;"> REPORTES <br><br>
+
+            <ul class="list-group">
+                <li class="list-group-item">INGRESOS AÑO: {{ ingAÑO }}</li>
+                <li class="list-group-item">INGRESOS MES: {{ ingMES }}</li>
+                <li class="list-group-item">INGRESOS DÍA: {{ ingDIA }}</li>
+                <li class="list-group-item">INGRESOS VEHICULOS AÑO: {{ ingVAÑO }}</li>
+            </ul>
+        </h3>
 </body>
 <script>
-    function guardarPuntoAcceso(){
-        form = $("#crearPortalesForm")
-        $.ajax({
-            url:form.attr("action"),
-            type:form.attr("method"),
-            data: form.serialize(),
-            success: function(data){
-                location.reload()
-            },
-            error: function(errores){
-                console.log(errores.responseJSON["errores"]);
-                form.find('.error_text').text('');
-                form.find('.is-invalid').removeClass('is-invalid');
-                errores = errores.responseJSON["errores"]
-
-                for (let i in errores){
-                    let x=form.find('input[name='+i+']')
-                    let y=form.find('select[name='+i+']')
-                    x.addClass("is-invalid")
-                    y.addClass("is-invalid")
-                    $("#"+i).text(errores[i])
-            }
-            }
-        })
-    }
-
-    function modificarPortal(url){
-        $("#modificarPortalModal").load(url, function(){
-                $(this).appendTo("body").modal("show")
-            })
-    }
-    document.addEventListener("DOMContentLoaded", function(event) {
-   
-   const showNavbar = (toggleId, navId, bodyId, headerId) =>{
-   const toggle = document.getElementById(toggleId),
-   nav = document.getElementById(navId),
-   bodypd = document.getElementById(bodyId),
-   headerpd = document.getElementById(headerId)
-   
-   // Validate that all variables exist
-   if(toggle && nav && bodypd && headerpd){
-   toggle.addEventListener('click', ()=>{
-   // show navbar
-   nav.classList.toggle('show')
-   // change icon
-   toggle.classList.toggle('bx-x')
-   // add padding to body
-   bodypd.classList.toggle('body-pd')
-   // add padding to header
-   headerpd.classList.toggle('body-pd')
-   })
-   }
-   }
-   
-   showNavbar('header-toggle','nav-bar','body-pd','header')
-   
-   const linkColor = document.querySelectorAll('.nav_link')
-   
-   function colorLink(){
-   if(linkColor){
-   linkColor.forEach(l=> l.classList.remove('active'))
-   this.classList.add('active')
-   }
-   }
-   linkColor.forEach(l=> l.addEventListener('click', colorLink))
-   
     
-   });
-
-   $(document).ready(function () {
-    $('#example').DataTable({
-        "language":{"url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"},
-    });
-});
-
-
 </script>
 {% endblock contenido %}

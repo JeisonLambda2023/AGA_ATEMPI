@@ -133,7 +133,13 @@ function abrirModalCrear(){
             contentType:false,
             processData: false,
             success: function(data){
-                location.reload()
+                Swal.fire(
+                'Éxito!',
+                'Se ha registrado el vehiculo correctamente',
+                'success'
+                ).then(function(){
+                    location.reload()
+                })
             },
             error: function(errores){
                 console.log(errores.responseJSON["errores"]);
@@ -204,7 +210,7 @@ function abrirModalCrear(){
 function eliminarVehiculo(url){
     Swal.fire({
     title: '¿Estás seguro?',
-    text: "Al eliminar este elemento no se podrá revertir el cambio!",
+    text: "Al eliminar este vehiculo no se podrá revertir el cambio!",
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
@@ -219,8 +225,8 @@ function eliminarVehiculo(url){
         data: {"csrfmiddlewaretoken":csrftoken},
         success: function(){
             Swal.fire(
-            'Correcto!',
-            'Se ha eliminado el elemento',
+            'Éxito!',
+            'Se ha eliminado el vehiculo correctamente',
             'success'
             ).then(function(){
                 location.reload()

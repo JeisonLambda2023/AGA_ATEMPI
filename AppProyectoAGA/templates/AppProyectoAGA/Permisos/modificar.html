@@ -1,0 +1,80 @@
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modificarPermisoModal">{{permiso.personal}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'modificarPermiso' permiso.pk %}" method="post" id="modificarPermisoPersonalForm">
+            {% csrf_token %}
+            <input type="hidden" name="personal" value="{{permiso.personal.pk}}">
+            <Label style="font-size: 15px;"><strong>Portal a autorizar: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
+            {{form.portal_autorizado}}
+            <p id="_portal_autorizado" class="bg-light error_text" style="color: #dc3545;"></p>
+            <Label style="font-size: 15px;"><strong>Fecha inicio de actividad: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
+            {{form.fecha_inicio_actividad}}
+            <p id="_fecha_inicio_actividad" class="bg-light error_text" style="color: #dc3545;"></p>
+            <Label style="font-size: 15px;"><strong>Fecha fin de actividad: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
+            {{form.fecha_fin_actividad}}
+            <p id="_fecha_fin_actividad" class="bg-light error_text" style="color: #dc3545;"></p>
+            <Label style="font-size: 15px;"><strong>Estado: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
+            {{form.estado}}
+            <p id="_estado" class="bg-light error_text" style="color: #dc3545;"></p>
+          
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-success" onclick="ModificarPermisoPersonal()">Modificar permiso</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    $("#imagenId").change(function () {
+      leerImg(this, document.getElementById("PerfilImg"));
+    });
+    function leerImg(input, img_destino) {
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          img_destino.setAttribute("src", e.target.result);
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+
+    function ModificarPermisoPersonal(){
+        form = $("#modificarPermisoPersonalForm")
+        $.ajax({
+            url:form.attr("action"),
+            type:form.attr("method"),
+            data: form.serialize(),
+            success: function(data){
+              $("#modificarPermisoModal").modal("hide")
+              Swal.fire(
+                'Éxito!',
+                'Se ha modificado el permiso correctamente',
+                'success'
+                ).then(function(){
+                    location.reload()
+                })
+            },
+            error: function(errores){
+                console.log(errores.responseJSON["errores"]);
+                form.find('.error_text').text('');
+                form.find('.is-invalid').removeClass('is-invalid');
+                errores = errores.responseJSON["errores"]
+
+                for (let i in errores){
+                    let x=form.find('input[name='+i+']')
+                    let y=form.find('select[name='+i+']')
+                    x.addClass("is-invalid")
+                    y.addClass("is-invalid")
+                    $("#_"+i).text(errores[i])
+            }
+            }
+        })
+    }
+  </script>

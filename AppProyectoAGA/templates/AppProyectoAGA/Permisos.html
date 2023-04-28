@@ -1,0 +1,122 @@
+{% extends './base.html' %}  
+
+{% load static %}
+ 
+{% block titulo %}AGA - PERMISOS{% endblock titulo %}
+
+{% block contenido %}
+    
+    <div class="height-100 bg-light"> 
+        <h4 style="color: black; text-align: center;">MÓDULO DE PERMISOS <br><br>
+        </h4>
+        
+        <br>
+        <table id="example" class="table table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Tipo persona</th>
+                    <th>Documento</th>
+                    <th>Nombre completo</th>
+                    <th>Empresa</th>
+                    <th>Fecha inicio de actividades</th>
+                    <th>Fecha fin de actividades</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for per in personal %}
+                <tr>
+                    {% if per.tipo_persona == "1" %}
+                    <td>Empleado</td>
+                    {% elif per.tipo_persona == "2" %}
+                    <td>Proveedor</td>
+                    {% elif per.tipo_persona == "3" %}
+                    <td>Visitante</td>
+                    {% elif per.tipo_persona == "4" %}
+                    <td>Contratista</td>
+                    {% endif %}
+                    <td>{{per.documento}}</td>
+                    <td>{{per.nombre_completo}}</td>
+                    <td>{{per.empresa}}</td>
+                    <td>{{per.fecha_inicio_actividad}}</td>
+                    <td>{{per.fecha_fin_actividad}}</td>
+                    {% if per.estado == "1" %}
+                    <td>Activo</td>
+                    {% else %}
+                    <td>Inactivo</td>
+                    {% endif %}
+                    <td><span class="icon" style="margin: 2px;"><a type="button" onclick="abrirModalCrear('{% url 'verInfoPermisoPersonal' per.pk %}')" class="btn btn-warning btn-sm"><i class="fa-solid fa-plus"></i></a><a type="button" onclick="abrirModalVer('{% url 'verPermisosPersonal' per.pk %}')" class="btn btn-info btn-sm"><i class="fa-solid fa-eye"></i></a></span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="modal fade" id="registrarPermisoModal" tabindex="-1" aria-labelledby="registrarPermisoModal" aria-hidden="true"></div>
+    <div class="modal fade" id="verPermisosModal" tabindex="-1" aria-labelledby="verPermisosModal" aria-hidden="true"></div>
+    
+
+</body>
+<script>
+function abrirModalCrear(url){
+    $("#registrarPermisoModal").load(url, function(){
+                    $(this).appendTo("body").modal("show")
+                })
+}
+function abrirModalVer(url){
+    $("#verPermisosModal").load(url, function(){
+                    $(this).appendTo("body").modal("show")
+                })
+}
+
+    
+   document.addEventListener("DOMContentLoaded", function(event) {
+   
+   const showNavbar = (toggleId, navId, bodyId, headerId) =>{
+   const toggle = document.getElementById(toggleId),
+   nav = document.getElementById(navId),
+   bodypd = document.getElementById(bodyId),
+   headerpd = document.getElementById(headerId)
+   
+   // Validate that all variables exist
+   if(toggle && nav && bodypd && headerpd){
+   toggle.addEventListener('click', ()=>{
+   // show navbar
+   nav.classList.toggle('show')
+   // change icon
+   toggle.classList.toggle('bx-x')
+   // add padding to body
+   bodypd.classList.toggle('body-pd')
+   // add padding to header
+   headerpd.classList.toggle('body-pd')
+   })
+   }
+   }
+   
+   showNavbar('header-toggle','nav-bar','body-pd','header')
+   
+   const linkColor = document.querySelectorAll('.nav_link')
+   
+   function colorLink(){
+   if(linkColor){
+   linkColor.forEach(l=> l.classList.remove('active'))
+   this.classList.add('active')
+   }
+   }
+   linkColor.forEach(l=> l.addEventListener('click', colorLink))
+   
+    
+   });
+
+   $(document).ready(function () {
+    $('#example').DataTable({
+        "language":{"url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"},
+    });
+
+
+});
+
+
+</script>
+{% endblock contenido %}
