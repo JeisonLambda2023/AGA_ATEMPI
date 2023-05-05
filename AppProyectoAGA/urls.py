@@ -12,16 +12,16 @@ urlpatterns = [
     path("Logout/", LogoutView.as_view(),{'next_page': settings.LOGOUT_REDIRECT_URL}, name="Logout"),
     
     #Página principal del aplicativo
-    path('Inicio/', login_required(views.inicio), name='Inicio'),
+    path('Inicio/', login_required(views.inicio.as_view()), name='Inicio'),
     
     #Módulo de accesos
-    path('Accesos/', login_required(views.accesos), name='Accesos'),
+    path('Accesos/', login_required(views.accesos.as_view()), name='Accesos'),
     path('RegistrarAcceso/', login_required(views.registrarAcceso.as_view()), name='registrarAcceso'),
     path('VerInfoAccesoPersonal/<int:pk>', login_required(views.InfoAccesoPersonal.as_view()), name='verInfoAccesoPersonal'),
     path('VerInfoAccesoVehiculo/<int:pk>', login_required(views.InfoAccesoVehiculo.as_view()), name='verInfoAccesoVehiculo'),
     
     #Módulo de usuarios
-    path('Usuarios/', login_required(views.usuarios), name='Usuarios'),
+    path('Usuarios/', login_required(views.usuarios.as_view()), name='Usuarios'),
     path('CrearUsuarios/', login_required(views.crearUsuarios.as_view()), name='crearUsuarios'),
     path('ModificarUsuarios/<int:pk>', login_required(views.modificarUsuarios.as_view()), name='modificarUsuarios'),
     path('EliminarUsuario/<int:pk>', login_required(views.eliminarUsuario.as_view()), name='eliminarUsuario'),
@@ -43,21 +43,23 @@ urlpatterns = [
     path('FormatoPortales/', login_required(cargas_masivas.formatoPortales), name='formatoPortales'),
     
     #Módulo de empresas
-    path('Empresas/', login_required(views.empresas), name='Empresas'),
+    path('Empresas/', login_required(views.empresas.as_view()), name='Empresas'),
     path('CrearEmpresas/', login_required(views.crearEmpresas.as_view()), name='crearEmpresas'),
     path('ModificarEmpresas/<int:pk>', login_required(views.modificarEmpresas.as_view()), name='modificarEmpresas'),
     path('EliminarEmpresa/<int:pk>', login_required(views.eliminarEmpresa.as_view()), name='eliminarEmpresa'),
     path('ExportarEmpresas/', login_required(exportarEmpresas), name="exportarEmpresas"),
+    path('FormatoEmpresas/', login_required(cargas_masivas.formatoEmpresas), name='formatoEmpresas'),
+    path('ImportarEmpresas/', login_required(cargas_masivas.importarEmpresas), name='importarEmpresas'),
     
     #Módulo de permisos
-    path('Permisos/', login_required(views.permisos), name='Permisos'),
+    path('Permisos/', login_required(views.permisos.as_view()), name='Permisos'),
     path('CrearPermiso/', login_required(views.crearPermiso.as_view()), name='crearPermiso'),
     path('VerInfoPermisoPersonal/<int:pk>', login_required(views.infoPermisoPersonal.as_view()), name='verInfoPermisoPersonal'),
     path('ModificarPermiso/<int:pk>', login_required(views.modificarPermiso.as_view()), name='modificarPermiso'),
     path('VerPermisoPersonal/<int:pk>', login_required(views.verInfoPermisoPersonal.as_view()), name='verPermisosPersonal'),
     path('ModificarPermisosPersonal/<int:pk>', login_required(views.modificarPermisoPersonal.as_view()), name='modificarPermisoPersonal'),
     path('EliminarPermiso/<int:pk>', login_required(views.eliminarPermiso.as_view()), name='eliminarPermiso'),
-    path('ExportarPermisos/', login_required(exportarPermisos), name="exportarPermisos"),
+    path('ExportarPermisos/<int:pk>', login_required(exportarPermisos), name="exportarPermisos"),
     
     #Módulo de vehiculos
     path('Vehiculos/', login_required(views.vehiculos.as_view()), name='Vehiculos'),

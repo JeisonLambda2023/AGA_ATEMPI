@@ -149,6 +149,17 @@ class PermisosForm(forms.ModelForm):
             "estado": forms.Select(attrs={"class":"form-select", "autocomplete":"off",})
         }
         
+    def clean_fecha_inicio_actividad(self):
+        self.fecha_inicio_actividad=self.cleaned_data["fecha_inicio_actividad"]
+        return self.fecha_inicio_actividad
+        
+    def clean_fecha_fin_actividad(self):
+        fin = self.cleaned_data["fecha_fin_actividad"]
+        if(fin < self.fecha_inicio_actividad):
+            raise forms.ValidationError("La fecha de fin de actividad debe ser mayor o igual a la fecha de inicio de actividad")
+        else:
+            return fin
+        
 
 class AccesosForm(forms.ModelForm):
     class Meta:

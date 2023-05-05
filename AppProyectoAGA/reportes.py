@@ -165,8 +165,8 @@ def exportarPortales(request):
         return response
         
         
-def exportarPermisos(request):
-    permisos = Permiso.objects.filter(borrado=False)
+def exportarPermisos(request, pk):
+    permisos = Permiso.objects.filter(personal=pk, borrado=False)
     Portal_autorizado,Personal,Fecha_inicio_actividad,Fecha_fin_actividad,Estado=[[],[],[],[],[]]
     for i in permisos:
         Portal_autorizado.append(i.portal_autorizado)
@@ -179,18 +179,18 @@ def exportarPermisos(request):
             Estado.append("Inactivo")
             
         excel = pd.DataFrame()
-        excel['Portal autorizado'] = Portal_autorizado
         excel['Personal'] = Personal
+        excel['Portal autorizado'] = Portal_autorizado
         excel['Fecha inicio actividad'] = Fecha_inicio_actividad
         excel['Fecha fin actividad'] = Fecha_fin_actividad
         excel['Estado'] = Estado
         
-        with BytesIO() as b:
-            writer = pd.ExcelWriter(b, engine='xlsxwriter')
-            excel.to_excel(writer, sheet_name='Personal', index=False)
-            writer.save()
-            filename = "Permisos_AGA"
-            content_type = 'application/vnd.ms-excel'
-            response = HttpResponse(b.getvalue(), content_type=content_type)
-            response['Content-Disposition'] = 'attachment; filename="' + filename + '.xlsx"'
-            return response
+    with BytesIO() as b:
+        writer = pd.ExcelWriter(b, engine='xlsxwriter')
+        excel.to_excel(writer, sheet_name='Personal', index=False)
+        writer.save()
+        filename = "Permisos_AGA"
+        content_type = 'application/vnd.ms-excel'
+        response = HttpResponse(b.getvalue(), content_type=content_type)
+        response['Content-Disposition'] = 'attachment; filename="' + filename + '.xlsx"'
+        return response

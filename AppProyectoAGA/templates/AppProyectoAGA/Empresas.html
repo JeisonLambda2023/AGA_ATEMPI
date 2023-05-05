@@ -5,13 +5,13 @@
 {% block titulo %}AGA - EMPRESAS{% endblock titulo %}
 
 {% block contenido %}
-    
+{% if request.user.rol == '1' %}
     <div class="height-100 bg-light">
         <h4 style="color: black; text-align: center;">MÓDULO DE EMPRESAS <br><br> <button type="button" class="btn btn-primary" onclick="abrirModalCrear()">
             <i class="fa solid fa-plus"></i> Crear registro</button> 
             <a href="{% url 'exportarEmpresas' %}" class="btn btn-success">
                 <i class="fa-solid fa-file-export"></i> Exportar datos </a>
-               <a href="{% url 'exportarEmpresas' %}" class="btn btn-success">
+               <a onclick="abrirModalImportar()" class="btn btn-success">
                 <i class="fa-solid fa-file-import"></i> Importar datos </a>
             </h4>
         
@@ -86,11 +86,89 @@
         </div>
     </div>
     <div class="modal fade" id="modificarEmpresaModal" data-bs-backdrop="static" data-bs-keyboard="false" ></div>
+
+    <div class="modal fade" id="importarModal" tabindex="-1" aria-labelledby="importarModal" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Importar Empresas</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <a href="{% url 'formatoEmpresas' %}" class="btn btn-success">Descargar formato de importación</a><br>
+                <form action="{% url 'importarEmpresas' %}" method="post" id="importarEmpresasForm" enctype="multipart/form-data">
+                    <br>El formato de fecha de inicio y fin de actividades debe ser el siguiente: "24-05-2023". Donde "24" sería el día, "05" sería el mes y "2023" sería el año, todo conectado por el guión(-). <br><br> Para poder registrar la empresa en estado "Activo", deberá ingresar en la columna "Estado" del formato un "1", si quiere registrarla en estado "Inactivo", deberá ingresar en la columna "Estado" del formato un "0"<br><br>
+                    <Label style="font-size: 15px;"><strong>Cargar archivo: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
+                    <input type="file" name="archivo_excel" id="archivo_excel" accept=".xls,.xlsx" onchange="validarArchivo()">
+                    <p id="archivo" class="bg-light error_text" style="color: #dc3545;"></p>
+                </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-success" onclick="importar()">Importar</button>
+                </div>
+            </div>
+            </div>
+{% else %}
+<h3 style="color: black; text-align: center;">SU USUARIO NO POSEE ACCESO A ESTA VISTA</h3>
+{% endif %}
 </body>
 <script>
+function abrirModalImportar(){
+    $("#importarModal").appendTo("body").modal("show")
+}
+
+function validarArchivo() {
+  const input = document.getElementById('archivo_excel');
+  const fileName = input.value;
+  const allowedExtensions = /(\.xls|\.xlsx)$/i;
+  
+  if (!allowedExtensions.exec(fileName)) {
+    alert('El archivo seleccionado no tiene una extensión válida. Se permiten archivos .xls o .xlsx.');
+    input.value = '';
+    return false;
+  }
+  
+  return true;
+}
+
+
     function abrirModalCrear(){
     $("#empresaModal").appendTo("body").modal("show")
 }
+
+function importar(){
+        form = $("#importarEmpresasForm")
+        let form2 = document.getElementById("importarEmpresasForm")
+        formData = new FormData(form2)
+        formData.append("csrfmiddlewaretoken", csrftoken)
+        $.ajax({
+            url:form.attr("action"),
+            type:form.attr("method"),
+            data: formData,
+            contentType:false,
+            processData: false,
+            success: function(data){
+                Swal.fire(
+                'Éxito!',
+                'Se ha importado la información de empresas correctamente',
+                'success'
+                ).then(function(){
+                    location.reload()
+                })
+            },
+            error: function(error){
+                console.log(error.responseJSON["error"]);
+                Swal.fire(
+                'Error!',
+                errores.responseJSON["error"],
+                'error'
+                ) 
+                
+            
+            }
+        })
+    }
 
     function guardarEmpresa(){
         form = $("#crearEmpresasForm")

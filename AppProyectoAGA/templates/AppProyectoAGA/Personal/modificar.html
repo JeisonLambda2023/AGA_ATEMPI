@@ -9,6 +9,7 @@
           {% csrf_token %}
           <label style="cursor: pointer;" for="imagenId"> <div class="circulo"> <img src="{{object.foto.url}}" style="border-radius: 50%; width: 100%; height: 100%;" alt="" id="PerfilImg"> </div></label>
           <input type="file" style="display:none" name="foto" id="imagenId">
+          <p id="_foto" class="bg-light error_text" style="color: #dc3545;"></p>
           <Label style="font-size: 15px;"><strong>Tipo de persona: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
           {{form.tipo_persona}}
           <p id="_tipo_persona" class="bg-light error_text" style="color: #dc3545;"></p>
@@ -21,7 +22,7 @@
           <Label style="font-size: 15px;"><strong>Empresa: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
           {{form.empresa}}
           <p id="_empresa" class="bg-light error_text" style="color: #dc3545;"></p>
-          <Label style="font-size: 15px;"><strong>Punto de acceso autorizado autorizado: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
+          <Label style="font-size: 15px;"><strong>Punto de acceso autorizado: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
           {{form.portal_autorizado}}
           <p id="_portal_autorizado" class="bg-light error_text" style="color: #dc3545;"></p>
           <Label style="font-size: 15px;"><strong>Fecha inicio de actividades: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>

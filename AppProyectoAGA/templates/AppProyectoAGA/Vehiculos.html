@@ -5,7 +5,7 @@
 {% block titulo %}AGA - VEHICULOS{% endblock titulo %}
 
 {% block contenido %}
-    
+{% if request.user.rol == '1' %}
     <div class="height-100 bg-light"> 
         <h4 style="color: black; text-align: center;">MÓDULO DE VEHICULOS <br><br> 
             <button type="button" class="btn btn-primary" onclick="abrirModalCrear()">
@@ -104,6 +104,7 @@
                 {{form.estado}}
                 <p id="estado" class="bg-light error_text" style="color: #dc3545;"></p>
                 {{form.foto}}
+                <p id="foto" class="bg-light error_text" style="color: #dc3545;"></p>
             </form>
             </div>
             <div class="modal-footer">
@@ -114,6 +115,9 @@
         </div>
     </div>
     <div class="modal fade" id="modificarVehiculoModal" data-bs-backdrop="static" data-bs-keyboard="false" ></div>
+{% else %}
+<h3 style="color: black; text-align: center;">SU USUARIO NO POSEE ACCESO A ESTA VISTA</h3>
+{% endif %}
 </body>
 <script>
 

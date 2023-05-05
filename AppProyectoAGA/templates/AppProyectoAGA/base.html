@@ -40,26 +40,24 @@
     </div>
     <hr>
     <ul class="menu">
-        
+        {% if request.user.rol == '1' %}
         <li class="{% if request.path == '/Administracion/Calendario/'%}active{% endif %}">
           <a  href="{% url 'Inicio' %}">
-            <!-- <i class='bx bx-calendar icono'></i> -->
             <img class="icono" src="{% static 'img/IconoInicio.png' %}" alt="">
             <span class="item">Inicio</span>
           </a>
        
         </li>
-
+        {% endif %}
         <li class="{% if request.path == '/Administracion/Calendario/'%}active{% endif %}">
             <a  href="{% url 'Accesos' %}">
-              <!-- <i class='bx bx-calendar icono'></i> -->
               <img class="icono" src="{% static 'img/IconoAccesos.png' %}" alt="">
               <span class="item">Control de acceso</span>
             </a>
          
         </li>
 
-        
+        {% if request.user.rol == '1' %}
         <li class="{% if request.path == '/Administracion/Calendario/'%}active{% endif %}">
             <a  href="{% url 'Usuarios' %}">
                 <img class="icono" style="width: 25px;" src="{% static 'img/IconoUsuarios.png' %}" alt="">
@@ -107,7 +105,7 @@
             </a>
         
         </li>
-        
+        {% endif %}
        
     </ul>
 </nav>

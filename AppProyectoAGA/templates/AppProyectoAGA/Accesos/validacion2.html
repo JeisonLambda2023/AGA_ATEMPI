@@ -23,7 +23,7 @@
             {% csrf_token %}
             <input type="hidden" name="ingreso" value="2">
             <input type="hidden" name="vehiculo" value="{{vehiculo.pk}}">
-            <input type="hidden" name="portal" value="1">
+            <input type="hidden" name="portal" value="{{ request.session.puntoAcesso_usuario}}">
         </form>
       </div>
       <div class="modal-footer">

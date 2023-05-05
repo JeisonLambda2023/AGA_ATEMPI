@@ -5,7 +5,7 @@
 {% block titulo %}AGA - PERSONAL{% endblock titulo %}
 
 {% block contenido %}
-    
+{% if request.user.rol == '1' %}
     <div class="height-100 bg-light"> 
         <h4 style="color: black; text-align: center;">MÓDULO DE PERSONAL <br><br> <button type="button" class="btn btn-primary" onclick="abrirModalCrear()">
             <i class="fa solid fa-plus"></i> Crear registro</button>
@@ -83,7 +83,7 @@
                 <Label style="font-size: 15px;"><strong>Empresa: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
                 {{form.empresa}}
                 <p id="empresa" class="bg-light error_text" style="color: #dc3545;"></p>
-                <Label style="font-size: 15px;"><strong>Portal autorizado: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
+                <Label style="font-size: 15px;"><strong>Punto de acceso autorizado: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
                 {{form.portal_autorizado}}
                 <p id="portal_autorizado" class="bg-light error_text" style="color: #dc3545;"></p>
                 <Label style="font-size: 15px;"><strong>Fecha inicio de actividades: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
@@ -99,6 +99,7 @@
                 {{form.estado}}
                 <p id="estado" class="bg-light error_text" style="color: #dc3545;"></p>
                 {{form.foto}}
+                <p id="foto" class="bg-light error_text" style="color: #dc3545;"></p>
             </form>
             </div>
             <div class="modal-footer">
@@ -109,6 +110,9 @@
         </div>
     </div>
     <div class="modal fade" id="modificarPersonalModal" data-bs-backdrop="static" data-bs-keyboard="false" ></div>
+{% else %}
+<h3 style="color: black; text-align: center;">SU USUARIO NO POSEE ACCESO A ESTA VISTA</h3>
+{% endif %}
 </body>
 <script>
 

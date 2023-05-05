@@ -6,7 +6,7 @@
       </div>
       <div class="modal-body">
         <label style="cursor: pointer;" for="imagenId"> <div class="circulo"> <img src="{{personal.foto.url}}" style="border-radius: 50%; width: 100%; height: 100%;" alt="" id="PerfilImg"> </div></label>
-          <input type="file" style="display:none" name="foto" id="imagenId">
+          <input type="file" style="display:none" name="foto" id="imagenId"><br>
           <Label style="font-size: 15px;"><strong>Tipo de persona: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
           {{personal.tipo_persona}}
           <p id="tipo_persona" class="bg-light error_text" style="color: #dc3545;"></p>
@@ -19,6 +19,9 @@
           <Label style="font-size: 15px;"><strong>Empresa: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
           {{personal.empresa}}
           <p id="empresa" class="bg-light error_text" style="color: #dc3545;"></p><br>
+          <div style="color: black; text-align: center;">
+            <a href="{% url 'exportarPermisos' personal.pk %}" class="btn btn-success">
+            <i class="fa-solid fa-file-export"></i> Exportar datos </a></div><br>
           <table id="example10" class="table table-striped" style="width:100%">
             <thead>
                 <tr>
@@ -29,7 +32,7 @@
                     <th>Acciones</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="tbodyexample10">
                 {% for permiso in permisos %}
                 <tr>
                     <td>{{permiso.portal_autorizado}}</td>
@@ -99,13 +102,29 @@ function eliminarPermiso(url){
             url: url,
             type: "POST",
             data: {"csrfmiddlewaretoken":csrftoken},
-            success: function(){
+            success: function(data){
                 Swal.fire(
                 'Éxito!',
                 'Se ha eliminado el permiso correctamente',
                 'success'
                 ).then(function(){
-                    location.reload()
+                  tabla = $('#example10').DataTable()
+                  console.log(tabla);
+                  table = $('#tbodyexample10')
+                    table.empty()
+                    contenido = data["info"]
+                    for (let index = 0; index < contenido.length; index++) {
+                        registro = contenido[index];
+                        table.append(` 
+                          <tr> 
+                          <td>${contenido[index]['portal']}</td> 
+                          <td>${contenido[index]['fecha_inicio']}</td>
+                          <td>${contenido[index]['fecha_fin']}</td>
+                          <td>${contenido[index]['estado']}</td> 
+                          <td>${contenido[index]['botones']}</td> 
+                          </tr> `)
+                    }
+                  $("#example10_info").html = $('#cantidadRegistros').text('Mostrando registros del ' + (contenido.length + 1) + ' al ' + (contenido.length + 1) + ' de un total de ' + contenido.length + ' registros');
                 })
             },
             error: function(errores){

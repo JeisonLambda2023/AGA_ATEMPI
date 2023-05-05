@@ -9,6 +9,7 @@
           {% csrf_token %}
           <label style="cursor: pointer;" for="imagenId"> <div class="circulo"> <img src="{{object.foto.url}}" style="border-radius: 50%; width: 100%; height: 100%;" alt="" id="PerfilImg"> </div></label>
           <input type="file" style="display:none" name="foto" id="imagenId">
+          <p id="_foto" class="bg-light error_text" style="color: #dc3545;"></p>
           <Label style="font-size: 15px;"><strong>Tipo de vehiculo: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
                 {{form.tipo_vehiculo}}
                 <p id="_tipo_vehiculo" class="bg-light error_text" style="color: #dc3545;"></p>

@@ -58,7 +58,22 @@
                 'Se ha modificado el permiso correctamente',
                 'success'
                 ).then(function(){
-                    location.reload()
+                    table = $('#tbodyexample10')
+                    table.empty()
+                    contenido = data["info"]
+                    for (let index = 0; index < contenido.length; index++) {
+                        registro = contenido[index];
+                        console.log(registro)
+                        console.log(index)
+                        table.append(` 
+                          <tr> 
+                          <td>${contenido[index]['portal']}</td> 
+                          <td>${contenido[index]['fecha_inicio']}</td>
+                          <td>${contenido[index]['fecha_fin']}</td>
+                          <td>${contenido[index]['estado']}</td> 
+                          <td>${contenido[index]['botones']}</td> 
+                          </tr> `)
+                    }
                 })
             },
             error: function(errores){

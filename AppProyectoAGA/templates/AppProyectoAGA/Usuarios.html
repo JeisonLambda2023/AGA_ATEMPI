@@ -5,6 +5,7 @@
 {% block titulo %}AGA - USUARIOS{% endblock titulo %}
 
 {% block contenido %}
+{% if request.user.rol == '1' %}
 <div class="height-100 bg-light">
     <h4 style="color: black; text-align: center;">MÓDULO DE USUARIOS <br><br> <button type="button" class="btn btn-primary" onclick="abrirModalCrear()">
         <i class="fa solid fa-plus"></i> Crear registro
@@ -78,6 +79,9 @@
     </div>
 </div>
 <div class="modal fade" id="modificarUsuarioModal" data-bs-backdrop="static" data-bs-keyboard="false" ></div>
+{% else %}
+<h3 style="color: black; text-align: center;">SU USUARIO NO POSEE ACCESO A ESTA VISTA</h3>
+{% endif %}
 </body>
 <script>
 function abrirModalCrear(){

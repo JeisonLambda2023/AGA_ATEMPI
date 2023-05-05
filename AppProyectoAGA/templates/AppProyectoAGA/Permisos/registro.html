@@ -22,9 +22,10 @@
         <form action="{% url 'crearPermiso' %}" method="post" id="registrarPermisoPersonalForm">
             {% csrf_token %}
             <input type="hidden" name="personal" value="{{personal.pk}}">
-            <Label style="font-size: 15px;"><strong>Portal a autorizar: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
+            <Label style="font-size: 15px;"><strong>Punto de acceso a autorizar: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
             {{form.portal_autorizado}}
             <p id="portal_autorizado" class="bg-light error_text" style="color: #dc3545;"></p>
+            <p id="codigo" class="bg-light error_text" style="color: #dc3545;"></p>
             <Label style="font-size: 15px;"><strong>Fecha inicio de actividad: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
             {{form.fecha_inicio_actividad}}
             <p id="fecha_inicio_actividad" class="bg-light error_text" style="color: #dc3545;"></p>
@@ -34,6 +35,7 @@
             <Label style="font-size: 15px;"><strong>Estado: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
             {{form.estado}}
             <p id="estado" class="bg-light error_text" style="color: #dc3545;"></p>
+
           
         </form>
       </div>
@@ -72,7 +74,7 @@
                 'Se ha asignado el permiso correctamente',
                 'success'
                 ).then(function(){
-                    location.reload()
+                    $("#registrarPermisoModal").modal("hide")
                 })
             },
             error: function(errores){

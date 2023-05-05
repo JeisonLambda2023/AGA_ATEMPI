@@ -14,6 +14,7 @@ import xlsxwriter
 from django.db.models import Count 
 from django.db.models.functions import ExtractYear, ExtractMonth, ExtractDay
 from io import BytesIO
+from django.contrib.sessions.backends.db import SessionStore
 
 
 #Inicio de sesión
@@ -22,8 +23,11 @@ class Login(LoginView):
     form_class = LoginForm
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return redirect("Inicio")
-        return render(request, self.template_name, {"form": self.form_class,"puntosAcceso":PuntoAcceso.objects.filter(estado='1')})
+            if request.user.rol == "1":
+                return redirect("Inicio")
+            else:
+                return redirect("Accesos")
+        return render(request, self.template_name, {"form": self.form_class,"puntosAcceso":PuntoAcceso.objects.filter(estado='1').filter(borrado=False)})
     
     def post(self, request, *args, **kwargs):
         context={"puntosAcceso":PuntoAcceso.objects.filter(estado='1')}
@@ -46,11 +50,14 @@ class Login(LoginView):
                     if usuario.estado == '1':
                         login(request, usuario)
                         usuario.last_login = datetime.now()
+                        request.session['puntoAcesso_usuario'] = request.POST.get("access")
                         if 'next' in request.GET:
                             return redirect(request.GET.get('next'))
-                            
                         else:
-                            return redirect("Inicio")
+                            if request.user.rol == "1":
+                                return redirect("Inicio")
+                            else:
+                                return redirect("Accesos")
                     else: 
                         context['error']="Este usuario se encuentra inhabilitado"
             else:
@@ -65,26 +72,55 @@ class Login(LoginView):
 
 
 #Página principal del aplicativo
-def inicio(request):
-    fechaActual = datetime.now()
-    ingAÑO = Acceso.objects.annotate(anio=ExtractYear('fecha_ingreso')).filter(anio=int(fechaActual.year)).count()
-    ingMES = Acceso.objects.annotate(mes=ExtractMonth('fecha_ingreso')).filter(mes=int(fechaActual.month)).count()
-    ingDIA = Acceso.objects.annotate(dia=ExtractDay('fecha_ingreso')).filter(dia=int(fechaActual.day)).count()
-    ingVAÑO = Acceso.objects.annotate(anio2=ExtractYear('fecha_ingreso')).filter(anio2=int(fechaActual.year), ingreso="2").count()
-    contexto={'ingAÑO': ingAÑO, "ingMES":ingMES, "ingDIA":ingDIA, "ingVAÑO":ingVAÑO}
-    return render(request, "AppProyectoAGA/Inicio.html", contexto)
+class inicio(View):
+    def get(self, request, *args, **kwargs):
+        fechaActual = datetime.now()
+        ingAÑO = Acceso.objects.annotate(anio=ExtractYear('fecha_ingreso')).filter(anio=int(fechaActual.year)).count()
+        ingMES = Acceso.objects.annotate(mes=ExtractMonth('fecha_ingreso')).filter(mes=int(fechaActual.month)).count()
+        ingDIA = Acceso.objects.annotate(dia=ExtractDay('fecha_ingreso')).filter(dia=int(fechaActual.day)).count()
+        ingVAÑO = Acceso.objects.annotate(anio2=ExtractYear('fecha_ingreso')).filter(anio2=int(fechaActual.year), ingreso="2").count()
+        agrupados = Acceso.objects.filter(fecha_ingreso__year=datetime.now().year).values('personal__tipo_persona').annotate(total=Count('id'))
+        agrupados = list(agrupados); total1="";total2="";total3="";total4="";
+        try:
+            if agrupados[0]['personal__tipo_persona'] != None:
+                total1=agrupados[0]['total']
+        except:
+            total1=0
+        try:
+            if agrupados[1]['personal__tipo_persona'] != None:
+                total2=agrupados[1]['total']
+        except:
+            total2=0
+        try:
+            if agrupados[4]['personal__tipo_persona'] != None:
+                total3=agrupados[4]['total']
+        except:
+            total3=0
+        try:
+            if agrupados[3]['personal__tipo_persona'] != None:
+                total4=agrupados[3]['total']
+        except:
+            total4=0
+        contexto={'ingAÑO': ingAÑO, "ingMES":ingMES, "ingDIA":ingDIA, "ingVAÑO":ingVAÑO, "agrupados": agrupados, "total1":total1, "total2":total2, "total3":total3, "total4":total4}
+        return render(request, "AppProyectoAGA/Inicio.html", contexto)
 
 
 #Módulo de accesos
-def accesos(request):
-    if not request.method == "POST":
-        accesos = Acceso.objects.filter(estado="1")
-        personal = Personal.objects.filter(borrado=False, estado="1")
-        vehiculos = Vehiculo.objects.filter(borrado=False, estado="1")
-        contexto={'accesos': accesos, "form":AccesosForm(), "personal": personal, "vehiculos": vehiculos}
-        return render(request, "AppProyectoAGA/Accesos.html", contexto)
-    else:
-        print(request.POST)
+class accesos(View):
+    def get(self, request, *args, **kwargs):
+        if request.user.rol == "1":
+            accesos = Acceso.objects.filter(estado="1")
+            personal = Personal.objects.filter(borrado=False, estado="1")
+            vehiculos = Vehiculo.objects.filter(borrado=False, estado="1")
+            contexto={'accesos': accesos, "form":AccesosForm(), "personal": personal, "vehiculos": vehiculos}
+            return render(request, "AppProyectoAGA/Accesos.html", contexto)
+        else:
+            accesos = Acceso.objects.filter(estado="1").filter(portal=request.session['puntoAcesso_usuario'])
+            personal = Personal.objects.filter(borrado=False, estado="1")
+            vehiculos = Vehiculo.objects.filter(borrado=False, estado="1")
+            contexto={'accesos': accesos, "form":AccesosForm(), "personal": personal, "vehiculos": vehiculos}
+            return render(request, "AppProyectoAGA/Accesos.html", contexto)
+    def post(self, request, *args, **kwargs):
         ingreso = request.POST.get("ingreso")
         doc = request.POST.get("doc")
         if not ingreso:
@@ -161,10 +197,11 @@ class registrarAcceso(View):
     
 
 #Módulo de usuarios
-def usuarios(request):
-    usuarios = Usuario.objects.filter(borrado=False)
-    contexto={'usuarios': usuarios, "form":UsuarioForm()}
-    return render(request, "AppProyectoAGA/Usuarios.html", contexto)
+class usuarios(View):
+    def get(self, request, *args, **kwargs):
+        usuarios = Usuario.objects.filter(borrado=False)
+        contexto={'usuarios': usuarios, "form":UsuarioForm()}
+        return render(request, "AppProyectoAGA/Usuarios.html", contexto)
 
 class crearUsuarios(CreateView):
     model = Usuario
@@ -309,10 +346,11 @@ class eliminarPortal(View):
         
 
 #Módulo de empresas
-def empresas(request):
-    empresas = Empresa.objects.filter(borrado=False)
-    contexto={'empresas': empresas, "form":EmpresaForm()}
-    return render(request, "AppProyectoAGA/Empresas.html", contexto)
+class empresas(View):
+    def get(self, request, *args, **kwargs):
+        empresas = Empresa.objects.filter(borrado=False)
+        contexto={'empresas': empresas, "form":EmpresaForm()}
+        return render(request, "AppProyectoAGA/Empresas.html", contexto)
 
 class crearEmpresas(CreateView):
     model = Empresa
@@ -334,6 +372,13 @@ class modificarEmpresas(UpdateView):
     template_name = "AppProyectoAGA/Empresas/modificar.html"
     success_url = reverse_lazy("Empresas")
     
+    def form_valid(self, form):
+        self.object = form.save()
+        estado = self.object.estado
+        Personal.objects.filter(empresa=self.object.pk).update(estado=estado)
+        Vehiculo.objects.filter(empresa=self.object.pk).update(estado=estado)
+        
+        return super().form_valid(form)
     
     def form_invalid(self, form):
         print(form.errors)
@@ -347,20 +392,21 @@ class eliminarEmpresa(View):
             empresa = self.model.objects.get(pk=kwargs["pk"])
             empresa.borrado = True
             empresa.save()
+            Personal.objects.filter(empresa=empresa.pk).update(borrado=empresa.borrado)
+            Vehiculo.objects.filter(empresa=empresa.pk).update(borrado=empresa.borrado)
             return JsonResponse({"estado":True}, status=200)
         except Exception as e:
             return JsonResponse({"estado":True, "error":str(e)}, status=400)
 
 
 #Módulo de permisos
-def permisos(request):
-    if not request.method == "POST":
+class permisos(View):
+    def get(self, request, *args, **kwargs):
         personal = Personal.objects.filter(borrado=False, estado="1")
         permisos = Permiso.objects.filter(borrado=False, estado="1")
         contexto={'permisos': permisos, "form":PermisosForm(), "personal": personal}
         return render(request, "AppProyectoAGA/Permisos.html", contexto)
-    else:
-        print(request.POST)
+    def post(self, request, *args, **kwargs):
         ingreso = request.POST.get("ingreso")
         doc = request.POST.get("doc")
         if not ingreso:
@@ -403,8 +449,12 @@ class crearPermiso(CreateView):
     success_url = reverse_lazy("Permisos")
     
     def form_valid(self, form):
-        form.save()
-        return JsonResponse({"status":"OK"}, status=200)
+        try:
+            form.save()
+            return JsonResponse({"status":"OK"}, status=200)
+        except:
+            errores = {"portal_autorizado":"El personal ya posee un permiso en este Punto de acceso"}
+            return JsonResponse({"status":"ERROR", "errores":errores}, status=400)
     
     def form_invalid(self, form):
         print(form.errors)
@@ -428,37 +478,40 @@ class modificarPermiso(UpdateView):
     success_url = reverse_lazy("Permisos")
     
     def post(self, request, *args, **kwargs):
-        val = list(self.get_object().personal.permiso_set.all())
-        valores=list()
-        MESES = {"01": "Enero","02": "Febrero","03": "Marzo","04": "Abril","05": "Mayo","06": "Junio","07": "Julio","08": "Agosto","09": "Septiembre",10: "Octubre",11: "Noviembre",12: "Diciembre"}
-        for i in val:
-            fecha_inicio = datetime.strptime(str(i.fecha_inicio_actividad), "%Y-%m-%d")
-            mes1 = fecha_inicio.strftime("%m")
-            fecha_inicio = fecha_inicio.strftime("%d de " + MESES[mes1] + " de %Y")
-            fecha_fin = datetime.strptime(str(i.fecha_fin_actividad), "%Y-%m-%d")
-            mes2 = fecha_fin.strftime("%m")
-            fecha_fin = fecha_fin.strftime("%d de " + MESES[mes2] + " de %Y")
-            if(i.estado == "1"):
-                estado="Activo"
-            else:
-                estado="Inactivo"
-            valores.append({
-                "portal": i.portal_autorizado.__str__(),
-                "personal": i.personal.__str__(),
-                "fecha_inicio": fecha_inicio,
-                "fecha_fin": fecha_fin,
-                "estado": estado,
-                "botones": f"""
-                    <span class="icon" style="margin: 2px;"><a onclick="modificarPermiso('{reverse("modificarPermisoPersonal", kwargs={"pk":i.pk})}')" class="btn btn-warning btn-sm"><i class="fa-solid fa-pen-to-square"></i></a><a onclick="eliminarPermiso({reverse("eliminarPermiso", kwargs={"pk":i.pk})})" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></a></span>
-                """
-            })
-        print(valores)
-        return JsonResponse({"status":"ERROR", "errores":valores}, status=400)
+        form = self.form_class(instance=self.get_object(), data=request.POST)
+        if form.is_valid():
+            form.save()
+            val = list(self.get_object().personal.permiso_set.all())
+            valores=list()
+            MESES = {"01": "Enero","02": "Febrero","03": "Marzo","04": "Abril","05": "Mayo","06": "Junio","07": "Julio","08": "Agosto","09": "Septiembre",10: "Octubre",11: "Noviembre",12: "Diciembre"}
+            for i in val:
+                if i.borrado == False:
+                    fecha_inicio = datetime.strptime(str(i.fecha_inicio_actividad), "%Y-%m-%d")
+                    mes1 = fecha_inicio.strftime("%m")
+                    fecha_inicio = fecha_inicio.strftime("%d de " + MESES[mes1] + " de %Y")
+                    fecha_fin = datetime.strptime(str(i.fecha_fin_actividad), "%Y-%m-%d")
+                    mes2 = fecha_fin.strftime("%m")
+                    fecha_fin = fecha_fin.strftime("%d de " + MESES[mes2] + " de %Y")
+                    if(i.estado == "1"):
+                        estado="Activo"
+                    else:
+                        estado="Inactivo"
+                    valores.append({
+                        "portal": i.portal_autorizado.__str__(),
+                        "personal": i.personal.__str__(),
+                        "fecha_inicio": fecha_inicio,
+                        "fecha_fin": fecha_fin,
+                        "estado": estado,
+                        "botones": f"""
+                            <span class="icon" style="margin: 2px;"><a onclick="modificarPermiso('{reverse("modificarPermisoPersonal", kwargs={"pk":i.pk})}')" class="btn btn-warning btn-sm"><i class="fa-solid fa-pen-to-square"></i></a><a onclick="eliminarPermiso('{reverse("eliminarPermiso", kwargs={"pk":i.pk})}')" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></a></span>
+                        """
+                    })
+            return JsonResponse({"status":"ERROR", "info":valores}, status=200)
+        else:
+            return JsonResponse({"status":"ERROR", "errores":form.errors}, status=400)
     
     
-    def form_invalid(self, form):
-        print(form.errors)
-        return JsonResponse({"status":"ERROR", "errores":form.errors}, status=400)
+  
     
     
 class modificarPermisoPersonal(View):
@@ -475,7 +528,32 @@ class eliminarPermiso(View):
             permiso = self.model.objects.get(pk=kwargs["pk"])
             permiso.borrado = True
             permiso.save()
-            return JsonResponse({"estado":True}, status=200)
+            val = list(permiso.personal.permiso_set.all())
+            valores=list()
+            MESES = {"01": "Enero","02": "Febrero","03": "Marzo","04": "Abril","05": "Mayo","06": "Junio","07": "Julio","08": "Agosto","09": "Septiembre",10: "Octubre",11: "Noviembre",12: "Diciembre"}
+            for i in val:
+                if i.borrado == False:
+                    fecha_inicio = datetime.strptime(str(i.fecha_inicio_actividad), "%Y-%m-%d")
+                    mes1 = fecha_inicio.strftime("%m")
+                    fecha_inicio = fecha_inicio.strftime("%d de " + MESES[mes1] + " de %Y")
+                    fecha_fin = datetime.strptime(str(i.fecha_fin_actividad), "%Y-%m-%d")
+                    mes2 = fecha_fin.strftime("%m")
+                    fecha_fin = fecha_fin.strftime("%d de " + MESES[mes2] + " de %Y")
+                    if(i.estado == "1"):
+                        estado="Activo"
+                    else:
+                        estado="Inactivo"
+                    valores.append({
+                        "portal": i.portal_autorizado.__str__(),
+                        "personal": i.personal.__str__(),
+                        "fecha_inicio": fecha_inicio,
+                        "fecha_fin": fecha_fin,
+                        "estado": estado,
+                        "botones": f"""
+                            <span class="icon" style="margin: 2px;"><a onclick="modificarPermiso('{reverse("modificarPermisoPersonal", kwargs={"pk":i.pk})}')" class="btn btn-warning btn-sm"><i class="fa-solid fa-pen-to-square"></i></a><a onclick="eliminarPermiso('{reverse("eliminarPermiso", kwargs={"pk":i.pk})}')" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></a></span>
+                        """
+                    })
+            return JsonResponse({"estado":True,"info":valores}, status=200)
         except Exception as e:
             return JsonResponse({"estado":True, "error":str(e)}, status=400)
 
