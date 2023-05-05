@@ -87,7 +87,7 @@
             </div>
             <div class="modal-body">
                 <a href="{% url 'formatoPortales' %}" class="btn btn-success">Descargar formato de importación</a><br>
-                <form action="{% url 'importarEmpresas' %}" method="post" id="importarEmpresasForm" enctype="multipart/form-data">
+                <form action="{% url 'importarPortales' %}" method="post" id="importarPortalesForm" enctype="multipart/form-data">
                     <br>Para poder registrar el punto de acceso en estado "Activo", deberá ingresar en la columna "Estado" del formato un "1", si quiere registrarlo en estado "Inactivo", deberá ingresar en la columna "Estado" del formato un "0".<br><br>
                     <Label style="font-size: 15px;"><strong>Cargar archivo: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
                     <input type="file" name="archivo_excel" id="archivo_excel" accept=".xls,.xlsx" onchange="validarArchivo()">
@@ -129,8 +129,8 @@ function abrirModalImportar(){
 }
 
 function importar(){
-        form = $("#importarEmpresasForm")
-        let form2 = document.getElementById("importarEmpresasForm")
+        form = $("#importarPortalesForm")
+        let form2 = document.getElementById("importarPortalesForm")
         formData = new FormData(form2)
         formData.append("csrfmiddlewaretoken", csrftoken)
         $.ajax({
@@ -142,7 +142,7 @@ function importar(){
             success: function(data){
                 Swal.fire(
                 'Éxito!',
-                'Se ha importado la información de Empresas correctamente',
+                'Se ha importado la información de puntos de acceso correctamente',
                 'success'
                 ).then(function(){
                     location.reload()
