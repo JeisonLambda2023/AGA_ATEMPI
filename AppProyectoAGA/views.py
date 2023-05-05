@@ -461,7 +461,7 @@ class crearPermiso(CreateView):
         return JsonResponse({"status":"ERROR", "errores":form.errors}, status=400)
     
     def post(self, request, *args, **kwargs):
-        print(request.FILES)
+        print(request.POST)
         return super().post(request, *args, **kwargs)
 
 

@@ -1,6 +1,7 @@
 from django.db import models
 from  django.contrib.auth.models import AbstractBaseUser, BaseUserManager,Group
 import datetime
+from django.db.models import Q
 import os
 from django.core.validators import FileExtensionValidator
 
@@ -193,26 +194,22 @@ class Permiso(models.Model):
     personal = models.ForeignKey(Personal, on_delete=models.SET_NULL, null=True)
     fecha_inicio_actividad = models.DateField(default=datetime.date.today)
     fecha_fin_actividad = models.DateField(default=datetime.date.today)
-    codigo = models.CharField(unique=False, max_length=200)
+    codigo = models.CharField(max_length=20)
     estado = models.CharField(max_length=5, choices=ESTADOS, default=1)
     borrado = models.BooleanField(null=True, blank=True, default=False)
-
+ 
+    def save(self, *args, **kwargs):
+        self.codigo = str(self.portal_autorizado.pk)+"-"+str(self.personal.pk)
+        super(Permiso, self).save(*args, **kwargs)
+        
     def __str__(self):
         return self.codigo.upper()
     
     class Meta:
         db_table = "permisos"
-        
-    def save(self, *args, **kwargs):
-        if not self.borrado:
-            # Si el campo "borrado" es False, establecemos unique=True para el campo "codigo"
-            self.codigo = str(self.portal_autorizado.pk)+"-"+str(self.personal.pk)
-            self._meta.get_field('codigo').unique = True
-        else:
-            # Si el campo "borrado" es True, establecemos unique=False para el campo "codigo"
-            self.codigo = str(self.portal_autorizado.pk)+"-"+str(self.personal.pk)
-            self._meta.get_field('codigo').unique = False
-        super(Permiso, self).save(*args, **kwargs)
+        constraints = [
+        models.UniqueConstraint(fields=['codigo'], name='unique_codigo_activo', condition=Q(borrado=False))
+        ]
     
 
 class Acceso(models.Model):

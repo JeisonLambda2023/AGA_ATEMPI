@@ -137,6 +137,11 @@ class VehiculosForm(forms.ModelForm):
         
         
 class PermisosForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(PermisosForm, self).__init__(*args, **kwargs)
+        self.fields["personal"].queryset = Personal.objects.filter(borrado=False).filter(estado="1")
+        self.fields["portal_autorizado"].queryset = PuntoAcceso.objects.filter(borrado=False).filter(estado="1")
+    
     class Meta:
         model = Permiso
         fields = ["portal_autorizado", "personal", "fecha_inicio_actividad", "fecha_fin_actividad", "estado"]
