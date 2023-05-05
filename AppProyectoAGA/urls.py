@@ -32,6 +32,8 @@ urlpatterns = [
     path('ModificarPersonal/<int:pk>', login_required(views.modificarPersonal.as_view()), name='modificarPersonal'),
     path('EliminarPersonal/<int:pk>', login_required(views.eliminarPersonal.as_view()), name='eliminarPersonal'),
     path('ExportarPersonal/', login_required(exportarPersonal), name="exportarPersonal"),
+    path('ImportarPersonal/', login_required(cargas_masivas.importarPersonal), name='importarPersonal'),
+    path('FormatoPersonal/', login_required(cargas_masivas.formatoPersonal), name='formatoPersonal'),
     
     #Módulo de portales
     path('Portales/', login_required(views.portales.as_view()), name='Portales'),
@@ -67,5 +69,7 @@ urlpatterns = [
     path('ModificarVehiculo/<int:pk>', login_required(views.modificarVehiculo.as_view()), name='modificarVehiculo'),
     path('EliminarVehiculo/<int:pk>', login_required(views.eliminarVehiculo.as_view()), name='eliminarVehiculo'),
     path('ExportarVehiculos/', login_required(exportarVehiculos), name="exportarVehiculos"),
+    path('ImportarVehiculos/', login_required(cargas_masivas.importarVehiculos), name='importarVehiculos'),
+    path('FormatoVehiculos/', login_required(cargas_masivas.formatoVehiculos), name='formatoVehiculos'),
     
 ]

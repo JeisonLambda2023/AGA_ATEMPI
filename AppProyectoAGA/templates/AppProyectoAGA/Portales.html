@@ -88,7 +88,7 @@
             <div class="modal-body">
                 <a href="{% url 'formatoPortales' %}" class="btn btn-success">Descargar formato de importación</a><br>
                 <form action="{% url 'importarEmpresas' %}" method="post" id="importarEmpresasForm" enctype="multipart/form-data">
-                    <br>Para poder registrar el punto de acceso en estado "Activo", deberá ingresar en la columna "Estado" del formato un "1", si quiere registrarlo en estado "Inactivo", deberá ingresar en la columna "Estado" del formato un "0"<br><br>
+                    <br>Para poder registrar el punto de acceso en estado "Activo", deberá ingresar en la columna "Estado" del formato un "1", si quiere registrarlo en estado "Inactivo", deberá ingresar en la columna "Estado" del formato un "0".<br><br>
                     <Label style="font-size: 15px;"><strong>Cargar archivo: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
                     <input type="file" name="archivo_excel" id="archivo_excel" accept=".xls,.xlsx" onchange="validarArchivo()">
                     <p id="archivo" class="bg-light error_text" style="color: #dc3545;"></p>
