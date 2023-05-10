@@ -15,6 +15,7 @@ from django.db.models import Count
 from django.db.models.functions import ExtractYear, ExtractMonth, ExtractDay
 from io import BytesIO
 from django.contrib.sessions.backends.db import SessionStore
+from django.contrib.auth.hashers import make_password
 
 
 #Inicio de sesión
@@ -30,18 +31,18 @@ class Login(LoginView):
         return render(request, self.template_name, {"form": self.form_class,"puntosAcceso":PuntoAcceso.objects.filter(estado='1').filter(borrado=False)})
     
     def post(self, request, *args, **kwargs):
-        context={"puntosAcceso":PuntoAcceso.objects.filter(estado='1')}
+        context={"puntosAcceso":PuntoAcceso.objects.filter(estado='1').filter(borrado=False)}
         
         form = LoginForm(request,data=request.POST) #con esto se le pasan los datos al formulario, inserción
         context["form"]=form
         
         if request.POST.get("access") == "None":
             context['error']="Seleccione un punto de acceso valido"
-            context['puntosAcceso']:PuntoAcceso.objects.filter(estado=1)
+            context['puntosAcceso']:PuntoAcceso.objects.filter(estado=1).filter(borrado=False)
             
             return render(request, self.template_name, context)
         else:
-            context['puntosAcceso']:PuntoAcceso.objects.filter(estado=1)
+            context['puntosAcceso']:PuntoAcceso.objects.filter(estado=1).filter(borrado=False)
             if form.is_valid():
                 nombre = form.cleaned_data.get("username")
                 contrasena = form.cleaned_data.get("password")
@@ -112,13 +113,15 @@ class accesos(View):
             accesos = Acceso.objects.filter(estado="1")
             personal = Personal.objects.filter(borrado=False, estado="1")
             vehiculos = Vehiculo.objects.filter(borrado=False, estado="1")
-            contexto={'accesos': accesos, "form":AccesosForm(), "personal": personal, "vehiculos": vehiculos}
+            diaActual=int(datetime.now().strftime('%d'))
+            contexto={'accesos': accesos, "form":AccesosForm(), "personal": personal, "vehiculos": vehiculos, "diaActual": diaActual}
             return render(request, "AppProyectoAGA/Accesos.html", contexto)
         else:
             accesos = Acceso.objects.filter(estado="1").filter(portal=request.session['puntoAcesso_usuario'])
             personal = Personal.objects.filter(borrado=False, estado="1")
             vehiculos = Vehiculo.objects.filter(borrado=False, estado="1")
-            contexto={'accesos': accesos, "form":AccesosForm(), "personal": personal, "vehiculos": vehiculos}
+            diaActual=int(datetime.now().strftime('%d'))
+            contexto={'accesos': accesos, "form":AccesosForm(), "personal": personal, "vehiculos": vehiculos, "diaActual": diaActual}
             return render(request, "AppProyectoAGA/Accesos.html", contexto)
     def post(self, request, *args, **kwargs):
         ingreso = request.POST.get("ingreso")
@@ -131,7 +134,7 @@ class accesos(View):
         if ingreso == "1":
             try:
                 personal = Personal.objects.get(documento=doc)
-                if personal.estado == "1":
+                if personal.estado == "1" and personal.borrado == False:
                     url = reverse_lazy("verInfoAccesoPersonal", kwargs={"pk":personal.pk})
                     return JsonResponse({"response":url}, status=200)
                 else:
@@ -141,7 +144,7 @@ class accesos(View):
         else:
             try:
                 vehiculo = Vehiculo.objects.get(placa=doc)
-                if vehiculo.estado == "1":
+                if vehiculo.estado == "1" and vehiculo.borrado == False:
                     url = reverse_lazy("verInfoAccesoVehiculo", kwargs={"pk":vehiculo.pk})
                     return JsonResponse({"response":url}, status=200)
                 else:
@@ -225,6 +228,13 @@ class modificarUsuarios(UpdateView):
     template_name = "AppProyectoAGA/Usuarios/modificar.html"
     success_url = reverse_lazy("Usuarios")
     
+    def form_valid(self, form):
+        usuario = form.save()
+        nuevaPW = self.request.POST.get("newpassword")
+        if nuevaPW:
+            usuario.set_password(nuevaPW)
+        usuario.save()
+        return JsonResponse({"status":"OK"}, status=200)
     
     def form_invalid(self, form):
         print(form.errors)

@@ -4,6 +4,8 @@ import datetime
 from django.db.models import Q
 import os
 from django.core.validators import FileExtensionValidator
+from django.core.exceptions import ValidationError
+from django.core.validators import MinLengthValidator
 
 DEFAULT_IMG_USER = "user.png"
 DEFAULT_IMG_CAR = "vehiculo.png"
@@ -92,7 +94,7 @@ class UsuarioManager(BaseUserManager):
 
 
 class Usuario(AbstractBaseUser):
-    documento = models.BigIntegerField(unique=True)
+    documento = models.BigIntegerField(unique=False)
     nombre = models.CharField(max_length=50, unique=True)
     rol = models.CharField(max_length=5, choices=ROLES, default=1)
     estado = models.CharField(max_length=5, choices=ESTADOS, default=1)
@@ -123,7 +125,7 @@ class Usuario(AbstractBaseUser):
     
 
 class Empresa(models.Model):
-    nit = models.CharField(max_length=100, unique=True)
+    nit = models.CharField(max_length=100, unique=False, validators=[MinLengthValidator(7)])
     razon_social = models.CharField(max_length=200)
     area_servicio = models.CharField(max_length=200)
     fecha_inicio_actividad = models.DateField(default=datetime.date.today)
@@ -149,7 +151,7 @@ def guardar_imagen_vehiculo(instance, filename):
     return  f"Fotos_vehiculos/{instance.tipo_vehiculo}_{instance.placa}/imagen{extension(filename)}"
 
 class Personal(models.Model):
-    documento = models.CharField(max_length=100, unique=True)
+    documento = models.CharField(max_length=100, unique=False, validators=[MinLengthValidator(7)])
     nombre_completo = models.CharField(max_length=200)
     portal_autorizado = models.ForeignKey(PuntoAcceso, on_delete=models.SET_NULL, null=True)
     empresa = models.ForeignKey(Empresa, on_delete=models.SET_NULL, null=True)
@@ -169,7 +171,7 @@ class Personal(models.Model):
         db_table = "personal"
     
 class Vehiculo(models.Model):
-    placa = models.CharField(max_length=10, unique=True)
+    placa = models.CharField(max_length=10, unique=False)
     marca = models.CharField(max_length=50)
     modelo = models.CharField(max_length=10)
     color = models.CharField(max_length=50)
@@ -207,9 +209,6 @@ class Permiso(models.Model):
     
     class Meta:
         db_table = "permisos"
-        constraints = [
-        models.UniqueConstraint(fields=['codigo'], name='unique_codigo_activo', condition=Q(borrado=False))
-        ]
     
 
 class Acceso(models.Model):

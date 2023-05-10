@@ -40,6 +40,28 @@ class EmpresaForm(forms.ModelForm):
             "estado": forms.Select(attrs={"class":"form-select", "autocomplete":"off",})
         }
         
+    def clean_nit(self):
+        self.nit=self.cleaned_data["nit"]
+        if len(str(self.nit)) < 7:
+            raise forms.ValidationError('Se debe ingresar un mínimo de 7 caracteres.')
+        if not self.instance.nit:
+            print("registrar")
+            emp = Empresa.objects.filter(nit=self.nit).filter(borrado=False)
+            if emp:
+                raise forms.ValidationError(f"Ya existe una empresa registrada con este Nit: {self.nit}")
+        else:
+            print("modificar")
+            emp = Empresa.objects.filter(nit=self.nit).filter(borrado=False)
+            objetoActual = Empresa.objects.get(pk=self.instance.pk)
+            bandera=False
+            for i in emp:
+                if i.nit == objetoActual.nit:
+                    bandera=True
+            print(bandera)
+            if emp and bandera==False:
+                raise forms.ValidationError(f"Ya existe una empresa registrada con este Nit: {self.nit}")
+        return self.nit
+        
     def clean_fecha_inicio_actividad(self):
         self.fecha_inicio_actividad=self.cleaned_data["fecha_inicio_actividad"]
         return self.fecha_inicio_actividad
@@ -65,6 +87,28 @@ class UsuarioForm(forms.ModelForm):
             "estado": forms.Select(attrs={"class":"form-select", "autocomplete":"off",})
         }
         
+    def clean_documento(self):
+        self.documento=self.cleaned_data["documento"]
+        if len(str(self.documento)) < 7:
+            raise forms.ValidationError('Se debe ingresar un mínimo de 7 caracteres.')
+        if not self.instance.documento:
+            print("registrar")
+            user = Usuario.objects.filter(documento=self.documento).filter(borrado=False)
+            if user:
+                raise forms.ValidationError(f"Ya existe un usuario registrado con este documento: {self.documento}")
+        else:
+            print("modificar")
+            user = Usuario.objects.filter(documento=self.documento).filter(borrado=False)
+            objetoActual = Usuario.objects.get(pk=self.instance.pk)
+            bandera=False
+            for i in user:
+                if i.documento == objetoActual.documento:
+                    bandera=True
+            print(bandera)
+            if user and bandera==False:
+                raise forms.ValidationError(f"Ya existe un usuario registrado con este documento: {self.documento}")
+        return self.documento
+    
         
 class PersonalForm(forms.ModelForm):
     
@@ -82,12 +126,34 @@ class PersonalForm(forms.ModelForm):
             "nombre_completo": forms.TextInput(attrs={"class":"form-control", "autocomplete":"off",}), 
             "empresa": forms.Select(attrs={"class":"form-select"}),
             "portal_autorizado": forms.Select(attrs={"class":"form-select"}),
-            "observaciones": forms.TextInput(attrs={"class":"form-control", "autocomplete":"off",}), 
+            "observaciones": forms.Textarea(attrs={"class":"form-control", "autocomplete":"off",}), 
             "tipo_persona": forms.Select(attrs={"class":"form-select"}),
             "fecha_inicio_actividad": forms.DateInput(attrs={"type":"date","class":"form-control", "autocomplete":"off",},format=('%Y-%m-%d')), 
             "fecha_fin_actividad": forms.DateInput(attrs={"type":"date","class":"form-control", "autocomplete":"off",},format=('%Y-%m-%d')), 
             "estado": forms.Select(attrs={"class":"form-select", "autocomplete":"off",})
         }
+        
+    def clean_documento(self):
+        self.documento=self.cleaned_data["documento"]
+        if len(str(self.documento)) < 7:
+            raise forms.ValidationError('Se debe ingresar un mínimo de 7 caracteres.')
+        if not self.instance.documento:
+            print("registrar")
+            per = Personal.objects.filter(documento=self.documento).filter(borrado=False)
+            if per:
+                raise forms.ValidationError(f"Ya existe un personal registrado con este documento: {self.documento}")
+        else:
+            print("modificar")
+            per = Personal.objects.filter(documento=self.documento).filter(borrado=False)
+            objetoActual = Personal.objects.get(pk=self.instance.pk)
+            bandera=False
+            for i in per:
+                if i.documento == objetoActual.documento:
+                    bandera=True
+            print(bandera)
+            if per and bandera==False:
+                raise forms.ValidationError(f"Ya existe un personal registrado con este documento: {self.documento}")
+        return self.documento
         
     def clean_fecha_inicio_actividad(self):
         self.fecha_inicio_actividad=self.cleaned_data["fecha_inicio_actividad"]
@@ -117,12 +183,34 @@ class VehiculosForm(forms.ModelForm):
             "modelo": forms.TextInput(attrs={"class":"form-control", "autocomplete":"off",}), 
             "color": forms.TextInput(attrs={"class":"form-control", "autocomplete":"off",}), 
             "empresa": forms.Select(attrs={"class":"form-select"}),
-            "observaciones": forms.TextInput(attrs={"class":"form-control", "autocomplete":"off",}), 
+            "observaciones": forms.Textarea(attrs={"class":"form-control", "autocomplete":"off",}), 
             "tipo_vehiculo": forms.Select(attrs={"class":"form-select"}),
             "fecha_inicio_actividad": forms.DateInput(attrs={"type":"date","class":"form-control", "autocomplete":"off",},format=('%Y-%m-%d')), 
             "fecha_fin_actividad": forms.DateInput(attrs={"type":"date","class":"form-control", "autocomplete":"off",},format=('%Y-%m-%d')), 
             "estado": forms.Select(attrs={"class":"form-select", "autocomplete":"off",})
         }
+     
+    def clean_placa(self):
+        self.placa=self.cleaned_data["placa"]
+        if len(str(self.placa)) < 4:
+            raise forms.ValidationError('Se debe ingresar un mínimo de 4 caracteres.')
+        if not self.instance.placa:
+            print("registrar")
+            veh = Vehiculo.objects.filter(placa=self.placa).filter(borrado=False)
+            if veh:
+                raise forms.ValidationError(f"Ya existe un vehiculo registrado con esta placa: {self.placa}")
+        else:
+            print("modificar")
+            veh = Vehiculo.objects.filter(placa=self.placa).filter(borrado=False)
+            objetoActual = Vehiculo.objects.get(pk=self.instance.pk)
+            bandera=False
+            for i in veh:
+                if i.placa == objetoActual.placa:
+                    bandera=True
+            print(bandera)
+            if veh and bandera==False:
+                raise forms.ValidationError(f"Ya existe un vehiculo registrado con esta placa: {self.placa}")
+        return self.placa 
         
     def clean_fecha_inicio_actividad(self):
         self.fecha_inicio_actividad=self.cleaned_data["fecha_inicio_actividad"]
@@ -154,6 +242,26 @@ class PermisosForm(forms.ModelForm):
             "estado": forms.Select(attrs={"class":"form-select", "autocomplete":"off",})
         }
         
+    def clean_codigo(self):
+        self.codigo=self.cleaned_data["codigo"]
+        if not self.instance.codigo:
+            print("registrar")
+            per = Permiso.objects.filter(codigo=self.codigo).filter(borrado=False)
+            if per:
+                raise forms.ValidationError(f"Ya existe un Permiso asignado al personal en el punto de acceso de: {self.portal_autorizado}")
+        else:
+            print("modificar")
+            per = Permiso.objects.filter(codigo=self.codigo).filter(borrado=False)
+            objetoActual = Permiso.objects.get(pk=self.instance.pk)
+            bandera=False
+            for i in per:
+                if i.codigo == objetoActual.codigo:
+                    bandera=True
+            print(bandera)
+            if per and bandera==False:
+                raise forms.ValidationError(f"Ya existe un Permiso asignado al personal en el punto de acceso de: {self.portal_autorizado}")
+        return self.codigo     
+        
     def clean_fecha_inicio_actividad(self):
         self.fecha_inicio_actividad=self.cleaned_data["fecha_inicio_actividad"]
         return self.fecha_inicio_actividad
@@ -164,7 +272,7 @@ class PermisosForm(forms.ModelForm):
             raise forms.ValidationError("La fecha de fin de actividad debe ser mayor o igual a la fecha de inicio de actividad")
         else:
             return fin
-        
+
 
 class AccesosForm(forms.ModelForm):
     class Meta:

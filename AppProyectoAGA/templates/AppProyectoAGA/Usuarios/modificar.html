@@ -9,15 +9,16 @@
             {% csrf_token %}
             <Label style="font-size: 15px;"><strong>Documento: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
             {{form.documento}}
-            <p id="_nombre" class="bg-light error_text" style="color: #dc3545;"></p>
+            <p id="_documento" class="bg-light error_text" style="color: #dc3545;"></p>
             <Label style="font-size: 15px;"><strong>Nombre de usuario: <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
             {{form.nombre}}
-            <p id="_latitud" class="bg-light error_text" style="color: #dc3545;"></p>
+            <p id="_nombre" class="bg-light error_text" style="color: #dc3545;"></p>
             <Label style="font-size: 15px;"><strong>Rol: <sup class="required"  style="color: #dc3545;">*</sup></strong></Label>
             {{form.rol}}
-            <p id="_longitud" class="bg-light error_text" style="color: #dc3545;"></p>
+            <p id="_rol" class="bg-light error_text" style="color: #dc3545;"></p>
             <Label style="font-size: 15px;"><strong>Nueva contraseña: <sup class="required"  style="color: #dc3545;">*</sup></strong></Label>
-            {{form.password}}
+            <input type="hidden" value="{{form.password.value}}" name="password" class="form-control" autocomplete="off" id="password" maxlength="128">
+            <input type="password" name="newpassword" class="form-control" autocomplete="off" id="newpassword" maxlength="128">
             <p id="_password" class="bg-light error_text" style="color: #dc3545;"></p>
             <Label style="font-size: 15px;"><strong>Estado <sup class="required" style="color: #dc3545;">*</sup></strong></Label>
             {{form.estado}}

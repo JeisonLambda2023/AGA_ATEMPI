@@ -1,8 +1,6 @@
 {% extends './base.html' %}  
-
 {% load static %}
 {% block titulo %}AGA - ACCESOS{% endblock titulo %}
-
 {% block contenido %}
     
     <div class="height-100 bg-light">
@@ -26,13 +24,13 @@
             </thead>
             <tbody>
                 {% for per in accesos %}
-                    {% if per.ingreso == "1" %}
+                    {% if per.ingreso == "1" and per.fecha_ingreso.day == diaActual %}
                     <tr>
                         <td>{{per.personal.get_tipo_persona_display}}</td>
                         <td>{{per.personal.documento}}</td>
                         <td>{{per.personal.nombre_completo}}</td>
                         <td>{{per.personal.empresa}}</td>
-                        <td>{{per.personal.portal_autorizado}}</td>
+                        <td>{{per.portal}}</td>
                         <td>{{per.fecha_ingreso}}</td>
                         {% if per.fecha_salida%}
                         <td>{{per.fecha_salida}}</td>
@@ -61,7 +59,7 @@
             </thead>
             <tbody>
                 {% for veh in accesos %}
-                {% if veh.ingreso == "2" %}
+                {% if veh.ingreso == "2" and veh.fecha_ingreso.day == diaActual %}
                     <tr>
                         <td>{{veh.vehiculo.get_tipo_vehiculo_display}}</td>
                         <td>{{veh.vehiculo.placa}}</td>
